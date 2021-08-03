@@ -30,13 +30,13 @@ local GetHealable = function(Character, Data)
 	end
 end
 
-return {
+local Objs = {
 	ObjectiveService = ObjectiveService,
 	List = {
-		['Radio'] = {
+		['EscortChar'] = {
 			function(Object, Data)
 				local Player, Character, Humanoid = Data.Player, Data.Character(), Data.Humanoid()
-				if not Data.Functions.IsAlive(Character, Humanoid) then warn('no') return false end
+				if not Data.Functions.IsAlive(Character, Humanoid) then return false end
 
 				local Target = Object.PrimaryPart
 				local PrimaryPart = Character.PrimaryPart
@@ -51,19 +51,78 @@ return {
 					Con:Disconnect()
 				end)
 
+				local Part = Instance.new('Part', Workspace)
+				Part.Size = Vector3.new(10, 2, 10)
+				Part.Anchored = true
+
 				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent do
-					PrimaryPart.Anchored = true
-					Data.Teleport(Character, Target.CFrame * CFrame.new(0, Data.Settings.SafeHeight, 0))
+					local CF = Target.CFrame * CFrame.new(0, Data.Settings.SafeHeight, 0)
+					Part.CFrame = CF * CFrame.new(0, -3.4, 0)
+					Data.Teleport(Character, CF)
 
 					if Humanoid.Health <= 50 then
 						GetHealable(Character, Data)
 					end
 
-					wait(.2)
+					wait()
 				end
 
 				wait()
 
+				if Part then Part:Destroy() end
+				if Con then Con:Disconnect() end
+				if PrimaryPart and PrimaryPart.Anchored and Data.Functions.IsAlive(Character, Humanoid) then
+					PrimaryPart.Anchored = false
+					Data.Teleport(Character, OriginCF)
+				end
+
+				return true
+			end, function()
+				return true
+			end,
+		},
+		['Fuel Truck'] = {
+			function (Object, Data)
+
+			end,
+		},
+		['Radio'] = {
+			function(Object, Data)
+				local Player, Character, Humanoid = Data.Player, Data.Character(), Data.Humanoid()
+				if not Data.Functions.IsAlive(Character, Humanoid) then return false end
+
+				local Target = Object.PrimaryPart
+				local PrimaryPart = Character.PrimaryPart
+
+				local Completed = nil
+				local Con = nil
+
+				local OriginCF = PrimaryPart.CFrame
+
+				Con = ObjectiveService.ObjectiveCompleted.OnClientEvent:connect(function()
+					Completed = true
+					Con:Disconnect()
+				end)
+
+				local Part = Instance.new('Part', Workspace)
+				Part.Size = Vector3.new(10, 2, 10)
+				Part.Anchored = true
+
+				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent do
+					local CF = Target.CFrame * CFrame.new(0, Data.Settings.SafeHeight, 0)
+					Part.CFrame = CF * CFrame.new(0, -3.4, 0)
+					Data.Teleport(Character, CF)
+
+					if Humanoid.Health <= 50 then
+						GetHealable(Character, Data)
+					end
+
+					wait()
+				end
+
+				wait()
+
+				if Part then Part:Destroy() end
 				if Con then Con:Disconnect() end
 				if PrimaryPart and PrimaryPart.Anchored and Data.Functions.IsAlive(Character, Humanoid) then
 					PrimaryPart.Anchored = false
@@ -77,3 +136,7 @@ return {
 		},
 	}
 }
+
+Objs.List['Ammo'] = Objs.List['Radio']
+
+return Objs
