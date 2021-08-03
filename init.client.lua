@@ -17,6 +17,8 @@ local ObjectiveFolder = World:WaitForChild('Objectives')
 local GameStuff = ReplicatedStorage:WaitForChild('Game Stuff')
 local StageName = GameStuff:WaitForChild('StageName')
 
+local Entities = Workspace:WaitForChild('Entities')
+local EntityObjectives = Entities:WaitForChild('Objectives')
 
 ----------------------------------------------
 --// Import function
@@ -85,6 +87,15 @@ while wait() do
 				CompleteObjective[1](Objective, DataTable)
 			end
 			if StageName.Value ~= 'Game' then break end
+		end
+		if StageName.Value == 'Game' then
+			for _, Objective in pairs(EntityObjectives:GetChildren()) do
+				local CompleteObjective = Objectives.List[Objective.Name]
+				if CompleteObjective and CompleteObjective[2](Objective, DataTable) then
+					CompleteObjective[1](Objective, DataTable)
+				end
+				if StageName.Value ~= 'Game' then break end
+			end
 		end
 	end
 end
