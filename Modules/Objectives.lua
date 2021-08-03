@@ -140,5 +140,6 @@ local Objs = {
 }
 
 Objs.List['Ammo'] = Objs.List['Radio']
+Objs.List['Medical'] = Objs.List['Radio']
 
 return Objs

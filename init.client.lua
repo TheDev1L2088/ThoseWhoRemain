@@ -24,7 +24,7 @@ local EntityObjectives = Entities:WaitForChild('Objectives')
 --// Import function
 
 local Import = function(Source)
-	local Repo = 'https://raw.githubusercontent.com/RainyLofi/ThoseWhoRemain/'
+	local Repo = 'https://raw.githubusercontent.com/RainyLofi/ThoseWhoRemain/main/'
 	if RunService:IsStudio() then
 		return require(script:WaitForChild(Source))
 	else
