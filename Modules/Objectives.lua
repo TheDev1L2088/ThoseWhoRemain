@@ -33,6 +33,72 @@ end
 local Objs = {
 	ObjectiveService = ObjectiveService,
 	List = {
+		['Bus'] = {
+			function(Object, Data)
+				local Player, Character, Humanoid = Data.Player, Data.Character(), Data.Humanoid()
+				if not Data.Functions.IsAlive(Character, Humanoid) then return false end
+
+				local Target = Object.Parent:FindFirstChild('Part')
+				local PrimaryPart = Character.PrimaryPart
+
+				local Completed = nil
+				local Con = nil
+
+				local OriginCF = PrimaryPart.CFrame
+
+				Con = ObjectiveService.ObjectiveCompleted.OnClientEvent:connect(function()
+					Completed = true
+					Con:Disconnect()
+				end)
+
+				Data.Functions.NoClip(true)
+
+				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent  do
+					for _, Item in pairs(Object.Parent:GetChildren()) do
+						if Item:findFirstChild('Glow') and Item.PrimaryPart then
+
+							local PickedUp = false
+							local PickedUpCon = nil
+							PickedUpCon = ObjectiveService.UpdateCarryingItem.OnClientEvent:connect(function()
+								PickedUp = true
+								PickedUpCon:Disconnect()
+							end)
+
+							repeat -- Pickup the object
+								Data.Teleport(Character, Item.PrimaryPart.CFrame * CFrame.new(0, 3.5, 0))
+								wait(.2)
+								Data.Functions.PickupObjectiveItem()
+								
+								if Humanoid.Health <= 50 then
+									GetHealable(Character, Data, Player, Data.Functions)
+								end
+							until PickedUp or not Data.Functions.IsAlive(Character, Humanoid) or not Target or not Target.Parent
+							
+							if PickedUp then -- Place the object in the bus
+								Data.Teleport(Character, Target.CFrame)
+								wait(.2)
+								Data.Functions.PlaceItem()
+							end
+						end
+
+						if not Data.Functions.IsAlive(Character, Humanoid) or not Target or not Target.Parent then break end
+					end
+				end
+
+				wait()
+
+				Data.Functions.NoClip(false)
+				if Con then Con:Disconnect() end
+				if PrimaryPart and PrimaryPart.Anchored and Data.Functions.IsAlive(Character, Humanoid) then
+					Data.Teleport(Character, OriginCF)
+				end
+
+				return true
+
+			end, function(Object, Data)
+				return Object.Parent:FindFirstChild('Part') ~= nil
+			end,
+		},
 		['EscortChar'] = {
 			function(Object, Data)
 				local Player, Character, Humanoid = Data.Player, Data.Character(), Data.Humanoid()
@@ -75,7 +141,6 @@ local Objs = {
 				if Part then Part:Destroy() end
 				if Con then Con:Disconnect() end
 				if PrimaryPart and PrimaryPart.Anchored and Data.Functions.IsAlive(Character, Humanoid) then
-					PrimaryPart.Anchored = false
 					Data.Teleport(Character, OriginCF)
 				end
 
@@ -133,7 +198,6 @@ local Objs = {
 				if Part then Part:Destroy() end
 				if Con then Con:Disconnect() end
 				if PrimaryPart and PrimaryPart.Anchored and Data.Functions.IsAlive(Character, Humanoid) then
-					PrimaryPart.Anchored = false
 					Data.Teleport(Character, OriginCF)
 				end
 

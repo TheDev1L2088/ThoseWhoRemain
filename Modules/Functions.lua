@@ -24,6 +24,14 @@ Functions.Pickup = function(Interact)
 	end
 end
 
+Functions.PlaceItem = function()
+	InteractionService.TryInteract:FireServer()
+end
+
+Functions.PickupObjectiveItem = function()
+	InteractionService.TryInteract:FireServer()
+end
+
 local Noclipped = false
 Functions.NoClip = function(state)
 	Noclipped = state
