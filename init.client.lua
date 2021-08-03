@@ -35,47 +35,54 @@ end
 
 local Objectives = Import('Objectives')
 local Teleport = Import('SafeTeleport')
+local Functions = Import('Functions')
 
 
 ----------------------------------------------
 --// Main
 
-local Thread = nil
-local StageNameCon = nil
-StageName.Changed:Connect(function()
-	if StageName.Value ~= 'Game' and Thread and coroutine.status(Thread) ~= 'suspended' then
-		if coroutine.status(Thread) ~= 'suspended' then
-			coroutine.yield(Thread)
-		end
+local Character = function()
+	if Player and Player.Character then return Player.Character end
+end
+
+local Humanoid = function()
+	local Char = Character()
+	if Char then
+		return Char:FindFirstChildOfClass('Humanoid')
 	end
-end)
+end
+
+local GameValues = {}
+
+for _, V in pairs(GameStuff:GetChildren()) do
+	if V:IsA('NumberValue') or V:IsA('StringValue') or V:IsA('BoolValue') then
+		GameValues[V.Name] = V.Value
+		V.Changed:Connect(function()
+			GameValues[V.Name] = V.Value
+		end)
+	end
+end
+
+local DataTable = {
+	GameValues = GameValues,
+	Objectives = ObjectiveFolder,
+
+	Player = Player,
+	Character = Character,
+	Humanoid = Humanoid,
+
+	Teleport = Teleport,
+	Functions = Functions,
+
+	Settings = Settings,
+}
 
 while wait() do
 	if StageName.Value == 'Game' then
 		for _, Objective in pairs(ObjectiveFolder:GetChildren()) do
 			local CompleteObjective = Objectives.List[Objective.Name]
-			if CompleteObjective then
-
-				Thread = coroutine.create(function(...)
-					if StageNameCon then StageNameCon:Disconnect() end
-					StageNameCon = StageName.Changed:Connect(function()
-						if StageName.Value ~= 'Game' then
-							StageNameCon:Disconnect()
-							Thread = nil
-							coroutine.yield()
-						end
-					end)
-
-					if not CompleteObjective(...) then
-						StageNameCon:Disconnect()
-						Thread = nil
-					end
-				end)
-
-				coroutine.resume(Thread, Objective, {
-					
-				})
-				repeat wait() until not Thread
+			if CompleteObjective and CompleteObjective[2](Objective, DataTable) then
+				CompleteObjective[1](Objective, DataTable)
 			end
 			if StageName.Value ~= 'Game' then break end
 		end
