@@ -11,7 +11,7 @@ local Ignore = Workspace:WaitForChild('Ignore')
 local Items = Ignore:WaitForChild('Items')
 
 local Healable = {'Medkit', 'Bandages'}
-local GetHealable = function(Character, Data)
+local GetHealable = function(Character, Data, Player, Functions)
 	local HealItem = nil
 	for _, Item in pairs(Items:GetChildren()) do
 		if table.find(Healable, Item.Name) and Item.PrimaryPart then
@@ -26,7 +26,7 @@ local GetHealable = function(Character, Data)
 
 		wait()
 
-		Data.Functions.Pickup()
+		Data.Functions.Pickup(HealItem, Functions.GetModule(Player, 'Interact'))
 	end
 end
 
@@ -61,7 +61,7 @@ local Objs = {
 					Data.Teleport(Character, CF)
 
 					if Humanoid.Health <= 50 then
-						GetHealable(Character, Data)
+						GetHealable(Character, Data, Player, Data.Functions)
 					end
 
 					wait()
@@ -116,7 +116,7 @@ local Objs = {
 					Data.Teleport(Character, CF)
 
 					if Humanoid.Health <= 50 then
-						GetHealable(Character, Data)
+						GetHealable(Character, Data, Player, Data.Functions)
 					end
 
 					wait()
