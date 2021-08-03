@@ -53,12 +53,7 @@ return {
 
 				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent do
 					PrimaryPart.Anchored = true
-					local Under = math.random(0, 1)
-					if Under == 0 then
-						Data.Teleport(Character, Target.CFrame * CFrame.new(0, Data.Settings.SafeHeight, 0))
-					else
-						Data.Teleport(Character, Target.CFrame * CFrame.new(0, -Data.Settings.SafeHeight, 0))
-					end
+					Data.Teleport(Character, Target.CFrame * CFrame.new(0, Data.Settings.SafeHeight, 0))
 
 					if Humanoid.Health <= 50 then
 						GetHealable(Character, Data)
