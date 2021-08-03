@@ -14,11 +14,13 @@ return function(Character, CF)
     local Humanoid = Character:FindFirstChildOfClass('Humanoid')
     if Humanoid then
         for _, Con in pairs(HumanoidConnections) do
-            pcall(function()
+            local r, e = pcall(function()
                 for _, Connection in pairs(getconnections(Humanoid[Con])) do
+                    warn('Got connection for', Con)
                     Connection:Disable()
                 end
             end)
+            if e then warn(e) end
         end
     end
 
