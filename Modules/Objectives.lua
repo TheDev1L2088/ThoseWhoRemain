@@ -56,7 +56,7 @@ local Objs = {
 				Part.Anchored = true
 
 				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent do
-					local CF = Target.CFrame * CFrame.new(0, Data.Settings.SafeHeight, 0)
+					local CF = CFrame.new(Target.Position) * CFrame.new(0, Data.Settings.SafeHeight, 0)
 					Part.CFrame = CF * CFrame.new(0, -3.4, 0)
 					Data.Teleport(Character, CF)
 
@@ -77,13 +77,15 @@ local Objs = {
 				end
 
 				return true
-			end, function()
-				return true
+			end, function(Obj)
+				return (Obj and Obj.Parent ~= nil)
 			end,
 		},
 		['Fuel Truck'] = {
 			function (Object, Data)
-
+				
+			end, function()
+				return false
 			end,
 		},
 		['Radio'] = {
@@ -109,7 +111,7 @@ local Objs = {
 				Part.Anchored = true
 
 				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent do
-					local CF = Target.CFrame * CFrame.new(0, Data.Settings.SafeHeight, 0)
+					local CF = CFrame.new(Target.Position) * CFrame.new(0, Data.Settings.SafeHeight, 0)
 					Part.CFrame = CF * CFrame.new(0, -3.4, 0)
 					Data.Teleport(Character, CF)
 
