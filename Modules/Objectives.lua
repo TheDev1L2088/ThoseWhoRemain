@@ -26,7 +26,7 @@ local GetHealable = function(Character, Data, Player, Functions)
 
 		wait()
 
-		Data.Functions.Pickup(HealItem, Functions.GetModule(Player, 'Interact'))
+		Data.Functions.Pickup(Functions.GetModule(Player, 'Interact'))
 	end
 end
 
@@ -51,9 +51,11 @@ local Objs = {
 					Con:Disconnect()
 				end)
 
+				Data.Functions.NoClip(true)
 				local Part = Instance.new('Part', Workspace)
 				Part.Size = Vector3.new(10, 2, 10)
 				Part.Anchored = true
+				Part.Transparency = 0.8
 
 				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent do
 					local CF = CFrame.new(Target.Position) * CFrame.new(0, Data.Settings.SafeHeight, 0)
@@ -69,6 +71,7 @@ local Objs = {
 
 				wait()
 
+				Data.Functions.NoClip(false)
 				if Part then Part:Destroy() end
 				if Con then Con:Disconnect() end
 				if PrimaryPart and PrimaryPart.Anchored and Data.Functions.IsAlive(Character, Humanoid) then
@@ -106,9 +109,11 @@ local Objs = {
 					Con:Disconnect()
 				end)
 
+				Data.Functions.NoClip(true)
 				local Part = Instance.new('Part', Workspace)
 				Part.Size = Vector3.new(10, 2, 10)
 				Part.Anchored = true
+				Part.Transparency = 0.8
 
 				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent do
 					local CF = CFrame.new(Target.Position) * CFrame.new(0, Data.Settings.SafeHeight, 0)
@@ -124,6 +129,7 @@ local Objs = {
 
 				wait()
 
+				Data.Functions.NoClip(false)
 				if Part then Part:Destroy() end
 				if Con then Con:Disconnect() end
 				if PrimaryPart and PrimaryPart.Anchored and Data.Functions.IsAlive(Character, Humanoid) then

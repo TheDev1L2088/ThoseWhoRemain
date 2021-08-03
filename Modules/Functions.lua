@@ -1,4 +1,5 @@
 local Workspace = game:GetService('Workspace')
+local RunService = game:GetService('RunService')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
 
 local Services = ReplicatedStorage:WaitForChild('ServiceRemotes')
@@ -6,14 +7,14 @@ local InteractionService = Services:WaitForChild('InteractionService')
 
 local RF = ReplicatedStorage:WaitForChild('RF')
 
+local Player = game:GetService('Players').LocalPlayer
+
 local Functions = {}
 
-Functions.Pickup = function(Item, Interact)
+Functions.Pickup = function(Interact)
 	InteractionService.TryInteract:FireServer()
 	local Data = Interact.ReturnTarget()
-	warn(Data)
-	if Data.CanInteract then
-		warn('Can Interact')
+	if Data and Data.CanInteract then
 		RF:InvokeServer(
 			'CheckInteract',
 			{
@@ -22,6 +23,20 @@ Functions.Pickup = function(Item, Interact)
 		)
 	end
 end
+
+local Noclipped = false
+Functions.NoClip = function(state)
+	Noclipped = state
+end
+
+RunService.Stepped:Connect(function()
+	if Player and Player.Character and Player.Character:FindFirstChildOfClass('Humanoid') then
+		local Character, Humanoid = Player.Character, Player.Character:FindFirstChildOfClass('Humanoid')
+		if Functions.IsAlive(Character, Humanoid) and Noclipped then
+			Humanoid:ChangeState(11)
+		end
+	end
+end)
 
 Functions.GetModule = function(Player, Module)
 	local PlayerScripts = Player:WaitForChild('PlayerScripts')

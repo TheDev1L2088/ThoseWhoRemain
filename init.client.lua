@@ -1,5 +1,5 @@
 local Settings = {
-	SafeHeight = 10, -- how high up from secure objectives
+	SafeHeight = 15, -- how high up from secure objectives
 
 }
 
