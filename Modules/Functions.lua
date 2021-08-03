@@ -44,7 +44,7 @@ Functions.NoClip = function(state)
 		end
 	end
 
-	Noclipped = state
+	--Noclipped = state
 end
 
 RunService.Stepped:Connect(function()
