@@ -59,7 +59,7 @@ return {
 						GetHealable(Character, Data)
 					end
 
-					wait()
+					wait(.2)
 				end
 
 				wait()
