@@ -37,11 +37,6 @@ local Noclipped = false
 Functions.NoClip = function(state)
 	if Player and Player.Character and Player.Character:FindFirstChildOfClass('Humanoid') then
 		local Humanoid = Player.Character:FindFirstChildOfClass('Humanoid')
-		for _, Con in pairs(HumanoidConnections) do
-			for _, Connection in pairs(getconnections(Humanoid[Con])) do
-				Connection:Disable()
-			end
-		end
 	end
 
 	--Noclipped = state
