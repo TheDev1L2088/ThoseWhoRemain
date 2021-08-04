@@ -41,8 +41,6 @@ Functions.NoClip = function(state)
 		if not table.find(Humanoids, Humanoid) then
 			for _, Con in pairs(HumanoidConnections) do
 				for _, Connection in pairs(getconnections(Humanoid[Con])) do
-					print(Connection.Function)
-					table.foreach(getfenv(Connection.Function), print)
 					Connection:Disable()
 				end
 			end
@@ -57,7 +55,11 @@ RunService.Stepped:Connect(function()
 	if Player and Player.Character and Player.Character:FindFirstChildOfClass('Humanoid') then
 		local Character, Humanoid = Player.Character, Player.Character:FindFirstChildOfClass('Humanoid')
 		if Functions.IsAlive(Character, Humanoid) and Noclipped then
-			Humanoid:ChangeState(11)
+			for _, child in pairs(Character:GetDescendants()) do
+				if child:IsA("BasePart") and child.CanCollide == true then
+					child.CanCollide = false
+				end
+			end
 		end
 	end
 end)
