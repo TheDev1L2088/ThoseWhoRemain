@@ -177,7 +177,7 @@ Functions.TargetZombies = function(GameValues, SafeTeleport, GetHealable)
 					if Zombie and Zombie.Parent and Zombie.PrimaryPart then
 						Part.CFrame = Zombie.PrimaryPart.CFrame * CFrame.new(0, 6, 0)
 						if not Healing then
-							SafeTeleport(Player.Character, Part.CFrame * CFrame.new(math.random(-3, 3), 3.5, math.random(-3, 3)))
+							SafeTeleport(Character, Part.CFrame * CFrame.new(math.random(-3, 3), 3.5, math.random(-3, 3)))
 						end
 					end
 				end)
@@ -186,7 +186,7 @@ Functions.TargetZombies = function(GameValues, SafeTeleport, GetHealable)
 					Functions.ShootZombie(Zombie)
 					if Humanoid.Health <= 50 then
 						Healing = true
-						GetHealable(Character, SafeTeleport, Functions)
+						--GetHealable(Character, SafeTeleport, Functions)
 						Healing = false
 					end
 				end
