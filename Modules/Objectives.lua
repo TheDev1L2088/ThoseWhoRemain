@@ -43,6 +43,98 @@ end
 local Objs = {
 	ObjectiveService = ObjectiveService,
 	List = {
+		['Tundra'] = {
+			function(Object, Data)
+				local Player, Character, Humanoid = Data.Player, Data.Character(), Data.Humanoid()
+				if not Data.Functions.IsAlive(Character, Humanoid) then return false end
+
+				local PrimaryPart = Character.PrimaryPart
+
+				local Completed = nil
+				local Con = nil
+
+				local OriginCF = PrimaryPart.CFrame
+
+				local HeadLights = Object:FindFirstChild('HeadLights')
+				if not HeadLights then return false end
+				local SpotLight = HeadLights:FindFirstChild('SpotLight')
+				if not SpotLight then return false end
+
+				Con = ObjectiveService.ObjectiveCompleted.OnClientEvent:connect(function()
+					Completed = true
+					Con:Disconnect()
+				end)
+
+				Data.Functions.NoClip(true)
+
+				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and SpotLight.Enabled == false and Data.GameValues.StageName == 'Game' do
+					for _, Part in pairs(Object.Parent:GetChildren()) do
+						if Part.Name == 'Part' and Part:FindFirstChild('DisplayText') then
+							local Display = Part:FindFirstChild('DisplayText').Value
+							local SearchingFor = nil
+							if Display == 'TIRE REQUIRED' then
+								SearchingFor = Object.Name .. ' Wheel'
+							elseif string.find(Display, 'FUEL') then
+								SearchingFor = 'Jerry Can'
+							elseif string.find(Display, 'SPARK') then
+								SearchingFor = 'Spark Plug'
+							end
+
+							if SearchingFor then
+								local FoundItem = nil
+								for _, Item in pairs(Object.Parent:GetChildren()) do
+									if Item.Name == SearchingFor then
+										FoundItem = Item
+										break
+									end
+								end
+								if FoundItem then
+									local PickedUp = false
+									local PickedUpCon = nil
+									PickedUpCon = ObjectiveService.UpdateCarryingItem.OnClientEvent:connect(function()
+										PickedUp = true
+										PickedUpCon:Disconnect()
+									end)
+
+									repeat wait(.2) -- Pickup the object
+										Data.Teleport(Character, FoundItem.PrimaryPart.CFrame * CFrame.new(0, 3.5, 0))
+										Data.Functions.PickupObjectiveItem()
+										
+										if Humanoid.Health <= 50 then
+											GetHealable(Character, Data, Player, Data.Functions)
+										end
+									until PickedUp or not Data.Functions.IsAlive(Character, Humanoid) or SpotLight.Enabled == true or Data.GameValues.StageName ~= 'Game'
+									
+									if PickedUp then -- Place the object in the bus
+										Data.Teleport(Character, Part.CFrame)
+										wait(.2)
+										Data.Functions.PlaceItem()
+									end
+									wait()
+								end
+							end
+						end
+					end
+					wait()
+				end
+				
+				wait()
+
+				Data.Functions.NoClip(false)
+				if Con then Con:Disconnect() end
+				if PrimaryPart and PrimaryPart.Anchored and Data.Functions.IsAlive(Character, Humanoid) then
+					Data.Teleport(Character, OriginCF)
+				end
+
+				return true
+			end, function(Object, Data)
+				local HeadLights = Object:FindFirstChild('HeadLights')
+				if not HeadLights then return false end
+				local SpotLight = HeadLights:FindFirstChild('SpotLight')
+				if not SpotLight then return false end
+				return SpotLight.Enabled == false
+			end,
+		},
 		['Bus'] = {
 			function(Object, Data)
 				local Player, Character, Humanoid = Data.Player, Data.Character(), Data.Humanoid()
@@ -104,7 +196,6 @@ local Objs = {
 				end
 
 				return true
-
 			end, function(Object, Data)
 				return Object.Parent:FindFirstChild('Part') ~= nil
 			end,
