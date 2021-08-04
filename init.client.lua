@@ -19,6 +19,7 @@ local StageName = GameStuff:WaitForChild('StageName')
 
 local Entities = Workspace:WaitForChild('Entities')
 local EntityObjectives = Entities:WaitForChild('Objectives')
+local Infected = Entities:WaitForChild('Infected')
 
 ----------------------------------------------
 --// Import function
@@ -79,11 +80,33 @@ local DataTable = {
 	Settings = Settings,
 }
 
+local Status = 'Nothing'
+
+local FightStatuses = {'Objective', 'Nothing'}
+spawn(function()
+	while wait() do
+		if table.find(FightStatuses, Status) and Player.Character and Player.Character.PrimaryPart and StageName.Value == 'Game' then
+			for _, Enemy in pairs(Infected:GetChildren()) do
+				if Enemy and Enemy.PrimaryPart then
+					local Distance = (Enemy.PrimaryPart.Position - Player.Character.PrimaryPart.Position).Magnitude
+					if Distance <= 15 then
+						Functions.ShootZombie(Enemy)
+					end
+				end
+				if not table.find(FightStatuses, Status) or not Player.Character or not Player.Character.PrimaryPart or StageName.Value ~= 'Game' then
+					break
+				end
+			end
+		end
+	end
+end)
+
 while wait() do
 	if StageName.Value == 'Game' then
 		for _, Objective in pairs(ObjectiveFolder:GetChildren()) do
 			local CompleteObjective = Objectives.List[Objective.Name]
 			if CompleteObjective and CompleteObjective[2](Objective, DataTable) then
+				Status = 'Objective'
 				CompleteObjective[1](Objective, DataTable)
 			end
 			if StageName.Value ~= 'Game' then break end
@@ -92,6 +115,7 @@ while wait() do
 			for _, Objective in pairs(EntityObjectives:GetChildren()) do
 				local CompleteObjective = Objectives.List[Objective.Name]
 				if CompleteObjective and CompleteObjective[2](Objective, DataTable) then
+					Status = 'Objective'
 					CompleteObjective[1](Objective, DataTable)
 				end
 				if StageName.Value ~= 'Game' then break end
@@ -100,6 +124,8 @@ while wait() do
 	end
 
 	if StageName.Value == 'Game' then
+		Status = 'TargettingZombies'
 		Functions.TargetZombies(GameValues, Teleport, Objectives.GetHealable)
+		Status = 'Nothing'
 	end
 end
