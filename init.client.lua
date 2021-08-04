@@ -79,6 +79,24 @@ local DataTable = {
 	Settings = Settings,
 }
 
+pcall(function()
+	local statetype = Enum.HumanoidStateType
+	local rnd = Random.new():NextInteger(150, 100000)
+	local mt = getrawmetatable(statetype)
+	local mt_index = mt.__index
+	setreadonly(mt, false)
+
+	mt.__index = newcclosure(function(t, k)
+	if not checkcaller() and t == statetype and k == "StrafingNoPhysics" then
+		return rnd
+	end
+
+	return mt_index(t, k)
+	end)
+
+	setreadonly(mt, true)
+end)
+
 while wait() do
 	if StageName.Value == 'Game' then
 		for _, Objective in pairs(ObjectiveFolder:GetChildren()) do

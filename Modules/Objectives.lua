@@ -64,9 +64,8 @@ local Objs = {
 								PickedUpCon:Disconnect()
 							end)
 
-							repeat -- Pickup the object
+							repeat wait(.2) -- Pickup the object
 								Data.Teleport(Character, Item.PrimaryPart.CFrame * CFrame.new(0, 3.5, 0))
-								wait(.2)
 								Data.Functions.PickupObjectiveItem()
 								
 								if Humanoid.Health <= 50 then
@@ -83,6 +82,7 @@ local Objs = {
 
 						if not Data.Functions.IsAlive(Character, Humanoid) or not Target or not Target.Parent then break end
 					end
+					wait()
 				end
 
 				wait()
