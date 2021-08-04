@@ -1,5 +1,6 @@
 local Workspace = game:GetService('Workspace')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
+local RunService = game:GetService('RunService')
 
 local World = Workspace:WaitForChild('World')
 local Objectives = World:WaitForChild('Objectives')
@@ -117,7 +118,7 @@ local Objs = {
 					end
 					wait()
 				end
-				
+
 				wait()
 
 				Data.Functions.NoClip(false)
@@ -211,8 +212,6 @@ local Objs = {
 				local Completed = nil
 				local Con = nil
 
-				local OriginCF = PrimaryPart.CFrame
-
 				Con = ObjectiveService.ObjectiveCompleted.OnClientEvent:connect(function()
 					Completed = true
 					Con:Disconnect()
@@ -221,26 +220,31 @@ local Objs = {
 				Data.Functions.NoClip(true)
 				local Part = CreateFloatingPart()
 
-				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent and Data.GameValues.StageName == 'Game' do
+				local Healing = false
+				RunService:BindToRenderStep('Escort', 3, function()
 					local CF = CFrame.new(Target.Position) * CFrame.new(0, Data.Settings.SafeHeight, 0)
 					Part.CFrame = CF * CFrame.new(0, -3.5, 0)
-					Data.Teleport(Character, CF)
-
-					if Humanoid.Health <= 50 then
-						GetHealable(Character, Data, Player, Data.Functions)
+					if not Healing then
+						Data.Teleport(Character, CF)
 					end
-
+				end)
+				
+				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent and Data.GameValues.StageName == 'Game' do
 					wait()
+					if Humanoid.Health <= 50 then
+						Healing = true
+						GetHealable(Character, Data, Player, Data.Functions)
+						Healing = false
+					end
 				end
+
+				RunService:UnbindFromRenderStep('Escort')
 
 				wait()
 
 				Data.Functions.NoClip(false)
 				if Part then Part:Destroy() end
 				if Con then Con:Disconnect() end
-				if PrimaryPart and PrimaryPart.Anchored and Data.Functions.IsAlive(Character, Humanoid) then
-					Data.Teleport(Character, OriginCF)
-				end
 
 				return true
 			end, function(Obj)
@@ -257,8 +261,6 @@ local Objs = {
 
 				local Completed = nil
 				local Con = nil
-
-				local OriginCF = PrimaryPart.CFrame
 
 				Con = ObjectiveService.ObjectiveCompleted.OnClientEvent:connect(function()
 					Completed = true
@@ -294,10 +296,7 @@ local Objs = {
 				Data.Functions.NoClip(false)
 				if Part then Part:Destroy() end
 				if Con then Con:Disconnect() end
-				if PrimaryPart and PrimaryPart.Anchored and Data.Functions.IsAlive(Character, Humanoid) then
-					Data.Teleport(Character, OriginCF)
-				end
-
+				
 				return true
 			end, function(Object)
 				local Body = Object:FindFirstChild('Body')
@@ -318,8 +317,6 @@ local Objs = {
 				local Completed = nil
 				local Con = nil
 
-				local OriginCF = PrimaryPart.CFrame
-
 				Con = ObjectiveService.ObjectiveCompleted.OnClientEvent:connect(function()
 					Completed = true
 					Con:Disconnect()
@@ -328,26 +325,31 @@ local Objs = {
 				Data.Functions.NoClip(true)
 				local Part = CreateFloatingPart()
 
-				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent and Data.GameValues.StageName == 'Game' do
+				local Healing = false
+				RunService:BindToRenderStep('Escort', 3, function()
 					local CF = CFrame.new(Target.Position) * CFrame.new(0, Data.Settings.SafeHeight, 0)
 					Part.CFrame = CF * CFrame.new(0, -3.5, 0)
-					Data.Teleport(Character, CF)
-
-					if Humanoid.Health <= 50 then
-						GetHealable(Character, Data, Player, Data.Functions)
+					if not Healing then
+						Data.Teleport(Character, CF)
 					end
-
+				end)
+				
+				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent and Data.GameValues.StageName == 'Game' do
 					wait()
+					if Humanoid.Health <= 50 then
+						Healing = true
+						GetHealable(Character, Data, Player, Data.Functions)
+						Healing = false
+					end
 				end
+
+				RunService:UnbindFromRenderStep('Escort')
 
 				wait()
 
 				Data.Functions.NoClip(false)
 				if Part then Part:Destroy() end
 				if Con then Con:Disconnect() end
-				if PrimaryPart and PrimaryPart.Anchored and Data.Functions.IsAlive(Character, Humanoid) then
-					Data.Teleport(Character, OriginCF)
-				end
 
 				return true
 			end, function(Object, Data)
