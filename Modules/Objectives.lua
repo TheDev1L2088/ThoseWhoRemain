@@ -22,7 +22,7 @@ local CreateFloatingPart = function()
 end
 
 local Healable = {'Medkit', 'Bandages'}
-local GetHealable = function(Character, Data, Player, Functions)
+local GetHealable = function(Character, Teleport, Functions)
 	local HealItem = nil
 	for _, Item in pairs(Items:GetChildren()) do
 		if table.find(Healable, Item.Name) and Item.PrimaryPart then
@@ -33,16 +33,17 @@ local GetHealable = function(Character, Data, Player, Functions)
 
 	if HealItem then
 		local CF = HealItem.PrimaryPart.CFrame * CFrame.new(0, 5, 0)
-		Data.Teleport(Character, CF)
+		Teleport(Character, CF)
 
 		wait()
 
-		Data.Functions.Pickup(Functions.GetModule('Interact'))
+		Functions.Pickup(Functions.GetModule('Interact'))
 	end
 end
 
 local Objs = {
 	ObjectiveService = ObjectiveService,
+	GetHealable = GetHealable,
 	List = {
 		['Tundra'] = {
 			function(Object, Data)
@@ -103,7 +104,7 @@ local Objs = {
 										Data.Functions.PickupObjectiveItem()
 
 										if Humanoid.Health <= 50 then
-											GetHealable(Character, Data, Player, Data.Functions)
+											GetHealable(Character, Data.Teleport, Data.Functions)
 										end
 
 										Attempts += 1
@@ -180,7 +181,7 @@ local Objs = {
 								Data.Functions.PickupObjectiveItem()
 
 								if Humanoid.Health <= 50 then
-									GetHealable(Character, Data, Player, Data.Functions)
+									GetHealable(Character, Data.Teleport, Data.Functions)
 								end
 								Attempts += 1
 							until PickedUp or not Item.Parent or Attempts >= 5 or not Item.PrimaryPart or not Data.Functions.IsAlive(Character, Humanoid) or not Target or not Target.Parent or Data.GameValues.StageName ~= 'Game'
@@ -246,7 +247,7 @@ local Objs = {
 					wait()
 					if Humanoid.Health <= 50 then
 						Healing = true
-						GetHealable(Character, Data, Player, Data.Functions)
+						GetHealable(Character, Data.Teleport, Data.Functions)
 						Healing = false
 					end
 				end
@@ -298,7 +299,7 @@ local Objs = {
 					end
 
 					if Humanoid.Health <= 50 then
-						GetHealable(Character, Data, Player, Data.Functions)
+						GetHealable(Character, Data.Teleport, Data.Functions)
 					end
 
 					wait()
@@ -351,7 +352,7 @@ local Objs = {
 					wait()
 					if Humanoid.Health <= 50 then
 						Healing = true
-						GetHealable(Character, Data, Player, Data.Functions)
+						GetHealable(Character, Data.Teleport, Data.Functions)
 						Healing = false
 						Offset = math.random(1, 5)
 					end
@@ -375,5 +376,6 @@ local Objs = {
 
 Objs.List['Ammo'] = Objs.List['Radio']
 Objs.List['Medical'] = Objs.List['Radio']
+Objs.List['Silverado'] = Objs.List['Tundra']
 
 return Objs

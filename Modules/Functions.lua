@@ -153,40 +153,48 @@ Functions.ShootZombie = function(AI)
 	return true
 end
 
-Functions.TargetZombies = function(DataTable, SafeTeleport)
-	warn('Here')
+Functions.TargetZombies = function(GameValues, SafeTeleport, GetHealable)
 	local Part = Functions.CreateFloatingPart()
 	Functions.NoClip(true)
 
 	local Character = Player.Character
 	local Humanoid = Player.Character:FindFirstChildOfClass('Humanoid')
 
-	while DataTable.StageName == 'Game' and Functions.IsAlive(Character, Humanoid) do
+	while GameValues.StageName == 'Game' and Functions.IsAlive(Character, Humanoid) do
 		for _, Zombie in pairs(Infected:GetChildren()) do
-			warn(Zombie)
 			if Zombie and Zombie.PrimaryPart and Zombie:FindFirstChildOfClass('Humanoid') and Zombie:FindFirstChildOfClass('Humanoid').Health >= 0 then
 
 				local Dead = false
 				local DiedCon = nil
+
 				DiedCon = Zombie:FindFirstChildOfClass('Humanoid').Died:Connect(function()
 					Dead = true
 					DiedCon:Disconnect()
 				end)
 
+				local Healing = false
 				RunService:BindToRenderStep('ShootZombie', 2, function()
 					if Zombie and Zombie.Parent and Zombie.PrimaryPart then
 						Part.CFrame = Zombie.PrimaryPart.CFrame * CFrame.new(0, 6, 0)
-						SafeTeleport(Player.Character, Part.CFrame * CFrame.new(0, 3.5, 0))
+						if not Healing then
+							
+							SafeTeleport(Player.Character, Part.CFrame * CFrame.new(math.random(-3, 3), 3.5, math.random(-3, 3)) * CFrame.Angles(math.rad(0), math.rad(math.random(0, 360)), math.rad(0)))
+						end
 					end
 				end)
 
-				while Zombie and Zombie.Parent and not Dead and Functions.IsAlive(Character, Humanoid) and DataTable.StageName == 'Game' do
+				while Zombie and Zombie.Parent and not Dead and Functions.IsAlive(Character, Humanoid) and GameValues.StageName == 'Game' do
 					Functions.ShootZombie(Zombie)
+					if Humanoid.Health <= 50 then
+						Healing = true
+						GetHealable(Character, SafeTeleport, Functions)
+						Healing = false
+					end
 				end
 
 				if DiedCon then DiedCon:Disconnect() end
 			end
-			if DataTable.StageName ~= 'Game' or not Functions.IsAlive(Character, Humanoid) then break end
+			if GameValues.StageName ~= 'Game' or not Functions.IsAlive(Character, Humanoid) then break end
 		end
 		wait()
 	end

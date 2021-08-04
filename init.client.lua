@@ -96,10 +96,10 @@ while wait() do
 				end
 				if StageName.Value ~= 'Game' then break end
 			end
-
-			if StageName.Value == 'Game' then
-				Functions.TargetZombies(DataTable, Teleport)
-			end
 		end
+	end
+
+	if StageName.Value == 'Game' then
+		Functions.TargetZombies(GameValues, Teleport, Objectives.GetHealable)
 	end
 end
