@@ -4,6 +4,7 @@ local ReplicatedStorage = game:GetService('ReplicatedStorage')
 
 local Services = ReplicatedStorage:WaitForChild('ServiceRemotes')
 local InteractionService = Services:WaitForChild('InteractionService')
+local ObjectiveService = Services:WaitForChild('ObjectiveService')
 
 local RF = ReplicatedStorage:WaitForChild('RF')
 
@@ -56,8 +57,10 @@ Functions.GetModule = function(Player, Module)
 	return require(Client:WaitForChild(Module))
 end
 
-Functions.ShootTank = function()
-	
+Functions.ShootTank = function(Object)
+	ObjectiveService.HitDamageable:FireServer(
+		Object:FindFirstChild('Body'):FindFirstChild('Trailer'):FindFirstChild('Tank')
+	)
 end
 
 Functions.IsAlive = function(Character, Humanoid)

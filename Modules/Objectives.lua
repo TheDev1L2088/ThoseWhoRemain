@@ -53,7 +53,7 @@ local Objs = {
 
 				Data.Functions.NoClip(true)
 
-				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent  do
+				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent and Data.GameValues.StageName == 'Game' do
 					for _, Item in pairs(Object.Parent:GetChildren()) do
 						if Item:findFirstChild('Glow') and Item.PrimaryPart then
 
@@ -71,7 +71,7 @@ local Objs = {
 								if Humanoid.Health <= 50 then
 									GetHealable(Character, Data, Player, Data.Functions)
 								end
-							until PickedUp or not Data.Functions.IsAlive(Character, Humanoid) or not Target or not Target.Parent
+							until PickedUp or not Data.Functions.IsAlive(Character, Humanoid) or not Target or not Target.Parent or Data.GameValues.StageName ~= 'Game'
 							
 							if PickedUp then -- Place the object in the bus
 								Data.Teleport(Character, Target.CFrame)
@@ -80,7 +80,7 @@ local Objs = {
 							end
 						end
 
-						if not Data.Functions.IsAlive(Character, Humanoid) or not Target or not Target.Parent then break end
+						if not Data.Functions.IsAlive(Character, Humanoid) or not Target or not Target.Parent or Data.GameValues.StageName ~= 'Game' then break end
 					end
 					wait()
 				end
@@ -123,9 +123,9 @@ local Objs = {
 				Part.Anchored = true
 				Part.Transparency = 0.8
 
-				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent do
+				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent and Data.GameValues.StageName == 'Game' do
 					local CF = CFrame.new(Target.Position) * CFrame.new(0, Data.Settings.SafeHeight, 0)
-					Part.CFrame = CF * CFrame.new(0, -4, 0)
+					Part.CFrame = CF * CFrame.new(0, -4.5, 0)
 					Data.Teleport(Character, CF)
 
 					if Humanoid.Health <= 50 then
@@ -151,9 +151,65 @@ local Objs = {
 		},
 		['Fuel Truck'] = {
 			function (Object, Data)
-				
-			end, function()
-				return false
+				local Player, Character, Humanoid = Data.Player, Data.Character(), Data.Humanoid()
+				if not Data.Functions.IsAlive(Character, Humanoid) then return false end
+
+				local Target = Object.PrimaryPart
+				local PrimaryPart = Character.PrimaryPart
+
+				local Completed = nil
+				local Con = nil
+
+				local OriginCF = PrimaryPart.CFrame
+
+				Con = ObjectiveService.ObjectiveCompleted.OnClientEvent:connect(function()
+					Completed = true
+					Con:Disconnect()
+				end)
+
+				Data.Functions.NoClip(true)
+				local Part = Instance.new('Part', Workspace)
+				Part.Size = Vector3.new(10, 2, 10)
+				Part.Anchored = true
+				Part.Transparency = 0.8
+
+				local Body = Object:FindFirstChild('Body')
+				if not Body then return false end
+				local Trailer = Body:FindFirstChild('Trailer')
+				if not Trailer then return false end
+
+				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent and Data.GameValues.StageName == 'Game' and not Trailer:FindFirstChild('Exploded Tank') do
+					local CF = CFrame.new(Target.Position) * CFrame.new(0, Data.Settings.SafeHeight, 0)
+					Part.CFrame = CF * CFrame.new(0, -4.5, 0)
+					Data.Teleport(Character, CF)
+
+					for i = 1, 3 do
+						Data.Functions.ShootTank(Object)
+					end
+
+					if Humanoid.Health <= 50 then
+						GetHealable(Character, Data, Player, Data.Functions)
+					end
+
+					wait()
+				end
+
+				wait()
+
+				Data.Functions.NoClip(false)
+				if Part then Part:Destroy() end
+				if Con then Con:Disconnect() end
+				if PrimaryPart and PrimaryPart.Anchored and Data.Functions.IsAlive(Character, Humanoid) then
+					Data.Teleport(Character, OriginCF)
+				end
+
+				return true
+			end, function(Object)
+				local Body = Object:FindFirstChild('Body')
+				if not Body then return false end
+				local Trailer = Body:FindFirstChild('Trailer')
+				if not Trailer then return false end
+				return Trailer:FindFirstChild('Exploded Tank') == nil
 			end,
 		},
 		['Radio'] = {
@@ -180,9 +236,9 @@ local Objs = {
 				Part.Anchored = true
 				Part.Transparency = 0.8
 
-				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent do
+				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent and Data.GameValues.StageName == 'Game' do
 					local CF = CFrame.new(Target.Position) * CFrame.new(0, Data.Settings.SafeHeight, 0)
-					Part.CFrame = CF * CFrame.new(0, -4, 0)
+					Part.CFrame = CF * CFrame.new(0, -4.5, 0)
 					Data.Teleport(Character, CF)
 
 					if Humanoid.Health <= 50 then
