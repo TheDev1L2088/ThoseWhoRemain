@@ -125,7 +125,7 @@ local Objs = {
 
 				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent do
 					local CF = CFrame.new(Target.Position) * CFrame.new(0, Data.Settings.SafeHeight, 0)
-					Part.CFrame = CF * CFrame.new(0, -3.4, 0)
+					Part.CFrame = CF * CFrame.new(0, -4, 0)
 					Data.Teleport(Character, CF)
 
 					if Humanoid.Health <= 50 then
@@ -182,7 +182,7 @@ local Objs = {
 
 				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent do
 					local CF = CFrame.new(Target.Position) * CFrame.new(0, Data.Settings.SafeHeight, 0)
-					Part.CFrame = CF * CFrame.new(0, -3.4, 0)
+					Part.CFrame = CF * CFrame.new(0, -4, 0)
 					Data.Teleport(Character, CF)
 
 					if Humanoid.Health <= 50 then
