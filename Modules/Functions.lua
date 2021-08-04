@@ -36,7 +36,7 @@ local Humanoids = {}
 local HumanoidConnections = {'Changed', 'StateChanged'}
 local Noclipped = false
 Functions.NoClip = function(state)
-	if Player and Player.Character and Player.Character:FindFirstChildOfClass('Humanoid') then
+	--[[if Player and Player.Character and Player.Character:FindFirstChildOfClass('Humanoid') then
 		local Humanoid = Player.Character:FindFirstChildOfClass('Humanoid')
 		if not table.find(Humanoids, Humanoid) then
 			for _, Con in pairs(HumanoidConnections) do
@@ -46,7 +46,7 @@ Functions.NoClip = function(state)
 			end
 			table.insert(Humanoids, Humanoid)
 		end
-	end
+	end]]--
 
 	Noclipped = state
 end
