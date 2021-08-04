@@ -37,7 +37,7 @@ local GetHealable = function(Character, Data, Player, Functions)
 
 		wait()
 
-		Data.Functions.Pickup(Functions.GetModule(Player, 'Interact'))
+		Data.Functions.Pickup(Functions.GetModule('Interact'))
 	end
 end
 

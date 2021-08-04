@@ -98,7 +98,7 @@ while wait() do
 			end
 
 			if StageName.Value == 'Game' then
-				Functions.TargetZombie()
+				Functions.TargetZombies(DataTable, Teleport)
 			end
 		end
 	end
