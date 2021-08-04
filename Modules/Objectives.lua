@@ -84,7 +84,7 @@ local Objs = {
 							if SearchingFor then
 								local FoundItem = nil
 								for _, Item in pairs(Object.Parent:GetChildren()) do
-									if Item.Name == SearchingFor then
+									if Item.Name == SearchingFor and Item.PrimaryPart and not Item:FindFirstChild('Debounce') then
 										FoundItem = Item
 										break
 									end
@@ -97,6 +97,7 @@ local Objs = {
 										PickedUpCon:Disconnect()
 									end)
 
+									local Attempts = 0
 									repeat wait(.2) -- Pickup the object
 										Data.Teleport(Character, FoundItem.PrimaryPart.CFrame * CFrame.new(0, 3.5, 0))
 										Data.Functions.PickupObjectiveItem()
@@ -104,12 +105,18 @@ local Objs = {
 										if Humanoid.Health <= 50 then
 											GetHealable(Character, Data, Player, Data.Functions)
 										end
-									until PickedUp or not Data.Functions.IsAlive(Character, Humanoid) or SpotLight.Enabled == true or Data.GameValues.StageName ~= 'Game'
+
+										Attempts += 1
+									until PickedUp or Attempts >= 5 or not Data.Functions.IsAlive(Character, Humanoid) or SpotLight.Enabled == true or Data.GameValues.StageName ~= 'Game'
 
 									if PickedUp then -- Place the object in the bus
 										Data.Teleport(Character, Part.CFrame)
 										wait(.2)
 										Data.Functions.PlaceItem()
+									else
+										local M = Instance.new('Model', FoundItem)
+										M.Name = 'Debounce'
+										game:GetService('Debris'):AddItem(M, 5)
 									end
 									wait()
 								end
@@ -158,7 +165,7 @@ local Objs = {
 
 				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent and Data.GameValues.StageName == 'Game' do
 					for _, Item in pairs(Object.Parent:GetChildren()) do
-						if Item:findFirstChild('Glow') and Item.PrimaryPart then
+						if Item:FindFirstChild('Glow') and Item.PrimaryPart and not Item:FindFirstChild('Debounce') then
 
 							local PickedUp = false
 							local PickedUpCon = nil
@@ -167,6 +174,7 @@ local Objs = {
 								PickedUpCon:Disconnect()
 							end)
 
+							local Attempts = 0
 							repeat wait(.2) -- Pickup the object
 								Data.Teleport(Character, Item.PrimaryPart.CFrame * CFrame.new(0, 3.5, 0))
 								Data.Functions.PickupObjectiveItem()
@@ -174,12 +182,17 @@ local Objs = {
 								if Humanoid.Health <= 50 then
 									GetHealable(Character, Data, Player, Data.Functions)
 								end
-							until PickedUp or not Data.Functions.IsAlive(Character, Humanoid) or not Target or not Target.Parent or Data.GameValues.StageName ~= 'Game'
+								Attempts += 1
+							until PickedUp or not Item.Parent or Attempts >= 5 or not Item.PrimaryPart or not Data.Functions.IsAlive(Character, Humanoid) or not Target or not Target.Parent or Data.GameValues.StageName ~= 'Game'
 
 							if PickedUp then -- Place the object in the bus
 								Data.Teleport(Character, Target.CFrame)
 								wait(.2)
 								Data.Functions.PlaceItem()
+							else
+								local M = Instance.new('Model', Item)
+								M.Name = 'Debounce'
+								game:GetService('Debris'):AddItem(M, 5)
 							end
 						end
 

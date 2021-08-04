@@ -63,6 +63,10 @@ Functions.ShootTank = function(Object)
 	)
 end
 
+Functions.TargetZombie = function()
+
+end
+
 Functions.IsAlive = function(Character, Humanoid)
 	if Character and Humanoid then
 		return (Character and Character.Parent and Humanoid and Humanoid.Health > 0 and Humanoid.WalkSpeed > 0)

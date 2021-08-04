@@ -1,5 +1,5 @@
 local Settings = {
-	SafeHeight = 12, -- how high up from secure objectives
+	SafeHeight = 13, -- how high up from secure objectives
 
 }
 
@@ -95,6 +95,10 @@ while wait() do
 					CompleteObjective[1](Objective, DataTable)
 				end
 				if StageName.Value ~= 'Game' then break end
+			end
+
+			if StageName.Value == 'Game' then
+				Functions.TargetZombie()
 			end
 		end
 	end
