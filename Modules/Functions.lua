@@ -198,7 +198,7 @@ Functions.TargetZombies = function(GameValues, SafeTeleport, GetHealable)
 					Functions.ShootZombie(Zombie)
 					if Humanoid.Health <= 50 then
 						Healing = true
-						--GetHealable(Character, SafeTeleport, Functions)
+						GetHealable(Character, SafeTeleport, Functions)
 						Healing = false
 					end
 				end
