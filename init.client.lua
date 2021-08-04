@@ -79,7 +79,7 @@ local DataTable = {
 	Settings = Settings,
 }
 
-pcall(function()
+local r, e = pcall(function()
 	local statetype = Enum.HumanoidStateType
 	local rnd = Random.new():NextInteger(150, 100000)
 	local mt = getrawmetatable(statetype)
@@ -96,6 +96,7 @@ pcall(function()
 
 	setreadonly(mt, true)
 end)
+if e then warn(e) end
 
 while wait() do
 	if StageName.Value == 'Game' then

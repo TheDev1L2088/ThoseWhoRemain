@@ -41,6 +41,8 @@ Functions.NoClip = function(state)
 		if not table.find(Humanoids, Humanoid) then
 			for _, Con in pairs(HumanoidConnections) do
 				for _, Connection in pairs(getconnections(Humanoid[Con])) do
+					print(Connection.Function)
+					table.foreach(getfenv(Connection.Function), print)
 					Connection:Disable()
 				end
 			end
