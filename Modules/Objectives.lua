@@ -100,12 +100,12 @@ local Objs = {
 									repeat wait(.2) -- Pickup the object
 										Data.Teleport(Character, FoundItem.PrimaryPart.CFrame * CFrame.new(0, 3.5, 0))
 										Data.Functions.PickupObjectiveItem()
-										
+
 										if Humanoid.Health <= 50 then
 											GetHealable(Character, Data, Player, Data.Functions)
 										end
 									until PickedUp or not Data.Functions.IsAlive(Character, Humanoid) or SpotLight.Enabled == true or Data.GameValues.StageName ~= 'Game'
-									
+
 									if PickedUp then -- Place the object in the bus
 										Data.Teleport(Character, Part.CFrame)
 										wait(.2)
@@ -170,12 +170,12 @@ local Objs = {
 							repeat wait(.2) -- Pickup the object
 								Data.Teleport(Character, Item.PrimaryPart.CFrame * CFrame.new(0, 3.5, 0))
 								Data.Functions.PickupObjectiveItem()
-								
+
 								if Humanoid.Health <= 50 then
 									GetHealable(Character, Data, Player, Data.Functions)
 								end
 							until PickedUp or not Data.Functions.IsAlive(Character, Humanoid) or not Target or not Target.Parent or Data.GameValues.StageName ~= 'Game'
-							
+
 							if PickedUp then -- Place the object in the bus
 								Data.Teleport(Character, Target.CFrame)
 								wait(.2)
@@ -228,7 +228,7 @@ local Objs = {
 						Data.Teleport(Character, CF)
 					end
 				end)
-				
+
 				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent and Data.GameValues.StageName == 'Game' do
 					wait()
 					if Humanoid.Health <= 50 then
@@ -296,7 +296,7 @@ local Objs = {
 				Data.Functions.NoClip(false)
 				if Part then Part:Destroy() end
 				if Con then Con:Disconnect() end
-				
+
 				return true
 			end, function(Object)
 				local Body = Object:FindFirstChild('Body')
@@ -324,22 +324,23 @@ local Objs = {
 
 				Data.Functions.NoClip(true)
 				local Part = CreateFloatingPart()
-
+				local Offset = 0
 				local Healing = false
 				RunService:BindToRenderStep('Escort', 3, function()
-					local CF = CFrame.new(Target.Position) * CFrame.new(0, Data.Settings.SafeHeight, 0)
+					local CF = CFrame.new(Target.Position) * CFrame.new(Offset, Data.Settings.SafeHeight, Offset)
 					Part.CFrame = CF * CFrame.new(0, -3.5, 0)
 					if not Healing then
 						Data.Teleport(Character, CF)
 					end
 				end)
-				
+
 				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent and Data.GameValues.StageName == 'Game' do
 					wait()
 					if Humanoid.Health <= 50 then
 						Healing = true
 						GetHealable(Character, Data, Player, Data.Functions)
 						Healing = false
+						Offset = math.random(1, 5)
 					end
 				end
 
