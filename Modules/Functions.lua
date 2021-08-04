@@ -154,6 +154,7 @@ Functions.ShootZombie = function(AI)
 end
 
 Functions.TargetZombies = function(DataTable, SafeTeleport)
+	warn('Here')
 	local Part = Functions.CreateFloatingPart()
 	Functions.NoClip(true)
 
@@ -162,6 +163,7 @@ Functions.TargetZombies = function(DataTable, SafeTeleport)
 
 	while DataTable.StageName == 'Game' and Functions.IsAlive(Character, Humanoid) do
 		for _, Zombie in pairs(Infected:GetChildren()) do
+			warn(Zombie)
 			if Zombie and Zombie.PrimaryPart and Zombie:FindFirstChildOfClass('Humanoid') and Zombie:FindFirstChildOfClass('Humanoid').Health >= 0 then
 
 				local Dead = false
