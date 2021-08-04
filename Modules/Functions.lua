@@ -118,20 +118,30 @@ Functions.ShootZombie = function(AI)
         }
     )
 
-	local AIs = {
-        {
-            ["AI"] = AI,
-            ["Velocity"] = Vector3.new(125.34039306641, -23.868158340454, -78.867584228516),
-            ["Special"] = "Headshot",
-            ["Damage"] = WeaponStats.Damage * 2.5 * 1
-        },
-    }
+	local AILists = {
+		{
+			{
+				["AI"] = AI,
+				["Velocity"] = Vector3.new(125.34039306641, -23.868158340454, -78.867584228516),
+				["Special"] = "Headshot",
+				["Damage"] = WeaponStats.Damage * 2.5 * 1
+			},
+		}
+	}
 
+	local MaxPerList = 5
+	local ListKey = 1
 	for _, Enemy in pairs(Infected:GetChildren()) do
         if Enemy and Enemy.PrimaryPart then
             local Distance = (AI.PrimaryPart.Position - Enemy.PrimaryPart.Position).Magnitude
-            if Distance <= 20 then
-                table.insert(AIs, {
+            if Distance <= 15 then
+				local List = AILists[ListKey]
+				if #List >= MaxPerList then
+					ListKey += 1
+					AILists[ListKey] = {}
+					List = AILists[ListKey]
+				end
+                table.insert(List, {
                     ["AI"] = Enemy,
                     ["Velocity"] = Vector3.new(125.34039306641, -23.868158340454, -78.867584228516),
                     ["Special"] = "Headshot",
@@ -141,12 +151,14 @@ Functions.ShootZombie = function(AI)
         end
     end
 
-    RE:FireServer(
-        "aa",
-        {
-            ["AIs"] = AIs
-        }
-    )
+	for _, AIList in pairs(AILists) do
+		RE:FireServer(
+			"aa",
+			{
+				["AIs"] = AIList
+			}
+		)
+	end
 
 	wait(60 / WeaponStats.RPM)
 
