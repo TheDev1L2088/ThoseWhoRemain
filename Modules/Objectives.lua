@@ -10,6 +10,16 @@ local ObjectiveService = Services:WaitForChild('ObjectiveService')
 local Ignore = Workspace:WaitForChild('Ignore')
 local Items = Ignore:WaitForChild('Items')
 
+local CreateFloatingPart = function()
+	local Part = Instance.new('Part', Ignore)
+	Part.Size = Vector3.new(12, 1, 12)
+	Part.Anchored = true
+	Part.Transparency = 0.7
+	Part.CanCollide = true
+	Part.CollisionGroupId = 4
+	return Part
+end
+
 local Healable = {'Medkit', 'Bandages'}
 local GetHealable = function(Character, Data, Player, Functions)
 	local HealItem = nil
@@ -118,14 +128,11 @@ local Objs = {
 				end)
 
 				Data.Functions.NoClip(true)
-				local Part = Instance.new('Part', Workspace)
-				Part.Size = Vector3.new(10, 2, 10)
-				Part.Anchored = true
-				Part.Transparency = 0.8
+				local Part = CreateFloatingPart()
 
 				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent and Data.GameValues.StageName == 'Game' do
 					local CF = CFrame.new(Target.Position) * CFrame.new(0, Data.Settings.SafeHeight, 0)
-					Part.CFrame = CF * CFrame.new(0, -4.5, 0)
+					Part.CFrame = CF * CFrame.new(0, -3.5, 0)
 					Data.Teleport(Character, CF)
 
 					if Humanoid.Health <= 50 then
@@ -168,10 +175,7 @@ local Objs = {
 				end)
 
 				Data.Functions.NoClip(true)
-				local Part = Instance.new('Part', Workspace)
-				Part.Size = Vector3.new(10, 2, 10)
-				Part.Anchored = true
-				Part.Transparency = 0.8
+				local Part = CreateFloatingPart()
 
 				local Body = Object:FindFirstChild('Body')
 				if not Body then return false end
@@ -180,7 +184,7 @@ local Objs = {
 
 				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent and Data.GameValues.StageName == 'Game' and not Trailer:FindFirstChild('Exploded Tank') do
 					local CF = CFrame.new(Target.Position) * CFrame.new(0, Data.Settings.SafeHeight, 0)
-					Part.CFrame = CF * CFrame.new(0, -4.5, 0)
+					Part.CFrame = CF * CFrame.new(0, -3.5, 0)
 					Data.Teleport(Character, CF)
 
 					for i = 1, 3 do
@@ -231,14 +235,11 @@ local Objs = {
 				end)
 
 				Data.Functions.NoClip(true)
-				local Part = Instance.new('Part', Workspace)
-				Part.Size = Vector3.new(10, 2, 10)
-				Part.Anchored = true
-				Part.Transparency = 0.8
+				local Part = CreateFloatingPart()
 
 				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent and Data.GameValues.StageName == 'Game' do
 					local CF = CFrame.new(Target.Position) * CFrame.new(0, Data.Settings.SafeHeight, 0)
-					Part.CFrame = CF * CFrame.new(0, -4.5, 0)
+					Part.CFrame = CF * CFrame.new(0, -3.5, 0)
 					Data.Teleport(Character, CF)
 
 					if Humanoid.Health <= 50 then
