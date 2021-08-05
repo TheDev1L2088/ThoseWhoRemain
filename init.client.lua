@@ -120,6 +120,9 @@ if not RunService:IsStudio() then
 		if NamecallMethod == 'FireServer' then
 			if Args[2] and Args[2] == 'RejoinK' then spawn(Rejoin) return wait(9e9) end
 			if Args[2] and Args[2] == 'CheatKick' then spawn(Rejoin) return wait(9e9) end
+		elseif NamecallMethod == 'Kick' then
+			spawn(Rejoin)
+			return wait(9e9)
 		end
 
 		return old(...)
