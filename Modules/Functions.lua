@@ -197,7 +197,7 @@ Functions.TargetZombies = function(GameValues, SafeTeleport, GetHealable, Settin
 
 				while Zombie and Zombie.Parent and not Dead and Functions.IsAlive(Character, Humanoid) and GameValues.StageName == 'Game' do
 					Functions.ShootZombie(Zombie, Settings.TargettingKillZombieRange)
-					if Humanoid.Health <= 50 then
+					if Humanoid.Health <= Settings.LookForHeal then
 						Healing = true
 						GetHealable(Character, SafeTeleport, Functions)
 						Healing = false

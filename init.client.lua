@@ -1,5 +1,6 @@
 local Settings = {
 	SafeHeight = 13, -- how high up from secure objectives
+	LookForHeal = 75, -- at how much health should it look for bandages/medkit
 	ObjectiveKillZombieRange = 35,
 	TargettingKillZombieRange = 30,
 }

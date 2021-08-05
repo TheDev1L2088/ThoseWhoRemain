@@ -103,7 +103,7 @@ local Objs = {
 										Data.Teleport(Character, FoundItem.PrimaryPart.CFrame * CFrame.new(0, 3.5, 0))
 										Data.Functions.PickupObjectiveItem()
 
-										if Humanoid.Health <= 50 then
+										if Humanoid.Health <= Data.Settings.LookForHeal then
 											GetHealable(Character, Data.Teleport, Data.Functions)
 										end
 
@@ -180,7 +180,7 @@ local Objs = {
 								Data.Teleport(Character, Item.PrimaryPart.CFrame * CFrame.new(0, 3.5, 0))
 								Data.Functions.PickupObjectiveItem()
 
-								if Humanoid.Health <= 50 then
+								if Humanoid.Health <= Data.Settings.LookForHeal then
 									GetHealable(Character, Data.Teleport, Data.Functions)
 								end
 								Attempts += 1
@@ -245,7 +245,7 @@ local Objs = {
 
 				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent and Data.GameValues.StageName == 'Game' do
 					wait()
-					if Humanoid.Health <= 50 then
+					if Humanoid.Health <= Data.Settings.LookForHeal then
 						Healing = true
 						GetHealable(Character, Data.Teleport, Data.Functions)
 						Healing = false
@@ -298,7 +298,7 @@ local Objs = {
 						Data.Functions.ShootTank(Object)
 					end
 
-					if Humanoid.Health <= 50 then
+					if Humanoid.Health <= Data.Settings.LookForHeal then
 						GetHealable(Character, Data.Teleport, Data.Functions)
 					end
 
@@ -350,7 +350,7 @@ local Objs = {
 
 				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and Target and Target.Parent and Data.GameValues.StageName == 'Game' do
 					wait()
-					if Humanoid.Health <= 50 then
+					if Humanoid.Health <= Data.Settings.LookForHeal then
 						Healing = true
 						GetHealable(Character, Data.Teleport, Data.Functions)
 						Healing = false
