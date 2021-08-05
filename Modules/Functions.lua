@@ -109,8 +109,13 @@ local GetLastEquipped = function()
 	return Data.LastEquipped, WeaponModel, WeaponStats
 end
 
-local Headshot = function(WeaponStats, HeadChance)
-	local r = math.random(1, HeadChance)
+local Headshot = function(WeaponStats, HeadChance, AI)
+	local r = 1
+	if HeadChance ~= 1 then
+		r = math.random(1, HeadChance)
+	end
+
+	if AI.Name == 'Burster' or AI.Name == 'Bloater' or AI.Name == 'Riot' then r = 1 end
 	if r == 1 then
 		return WeaponStats.Damage * 2.5 * 1, 'Headshot'
 	else
@@ -137,7 +142,7 @@ Functions.ShootZombie = function(AI, Range, HeadChance)
         }
     )
 
-	local Damage, Special = Headshot(WeaponStats, HeadChance)
+	local Damage, Special = Headshot(WeaponStats, HeadChance, AI)
 	local AILists = {
 		{
 			{
@@ -161,7 +166,7 @@ Functions.ShootZombie = function(AI, Range, HeadChance)
 					AILists[ListKey] = {}
 					List = AILists[ListKey]
 				end
-				local AIDamage, AISpecial = Headshot(WeaponStats, HeadChance)
+				local AIDamage, AISpecial = Headshot(WeaponStats, HeadChance, Enemy)
                 table.insert(List, {
                     ["AI"] = Enemy,
                     ["Velocity"] = Vector3.new(125.34039306641, -23.868158340454, -78.867584228516),

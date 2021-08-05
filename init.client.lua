@@ -8,7 +8,7 @@ local Settings = {
 	TargettingKillZombieRange = 30,
 	GetBodyArmor = true,
 	GamesBeforeRejoin = 3,
-	HeadChance = 3,
+	HeadChance = 1,
 }
 
 ----------------------------------------------
