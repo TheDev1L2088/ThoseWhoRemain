@@ -10,6 +10,8 @@ return function(Character, CF)
 		end
 	end
 
-	Character.PrimaryPart.CFrame = CF
-	Character:SetPrimaryPartCFrame(CF)
+	if Character.PrimaryPart then
+		Character.PrimaryPart.CFrame = CF
+		Character:SetPrimaryPartCFrame(CF)
+	end
 end

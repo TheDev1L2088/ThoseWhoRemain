@@ -1,6 +1,7 @@
 local Settings = {
 	SafeHeight = 13, -- how high up from secure objectives
-
+	ObjectiveKillZombieRange = 35,
+	TargettingKillZombieRange = 30,
 }
 
 ----------------------------------------------
@@ -89,7 +90,7 @@ spawn(function()
 			for _, Enemy in pairs(Infected:GetChildren()) do
 				if Enemy and Enemy.PrimaryPart then
 					local Distance = (Enemy.PrimaryPart.Position - Player.Character.PrimaryPart.Position).Magnitude
-					if Distance <= 30 then
+					if Distance <= Settings.ObjectiveKillZombieRange then
 						Functions.ShootZombie(Enemy)
 					end
 				end
@@ -125,7 +126,7 @@ while wait() do
 
 	if StageName.Value == 'Game' then
 		Status = 'TargettingZombies'
-		Functions.TargetZombies(GameValues, Teleport, Objectives.GetHealable)
+		Functions.TargetZombies(GameValues, Teleport, Objectives.GetHealable, Settings)
 		Status = 'Nothing'
 	end
 end

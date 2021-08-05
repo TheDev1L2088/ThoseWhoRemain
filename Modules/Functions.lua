@@ -100,7 +100,8 @@ local GetLastEquipped = function()
 	return Data.LastEquipped, WeaponModel, WeaponStats
 end
 
-Functions.ShootZombie = function(AI)
+Functions.ShootZombie = function(AI, Range)
+	if not Range then Range = 20 end
 	local WeaponList = Fire2[5]
 	local LastEquipped, WeaponModel, WeaponStats = GetLastEquipped()
 	local Weapon = WeaponList[1]
@@ -134,7 +135,7 @@ Functions.ShootZombie = function(AI)
 	for _, Enemy in pairs(Infected:GetChildren()) do
         if Enemy and Enemy.PrimaryPart then
             local Distance = (AI.PrimaryPart.Position - Enemy.PrimaryPart.Position).Magnitude
-            if Distance <= 15 then
+            if Distance <= Range then
 				local List = AILists[ListKey]
 				if #List >= MaxPerList then
 					ListKey += 1
@@ -165,7 +166,7 @@ Functions.ShootZombie = function(AI)
 	return true
 end
 
-Functions.TargetZombies = function(GameValues, SafeTeleport, GetHealable)
+Functions.TargetZombies = function(GameValues, SafeTeleport, GetHealable, Settings)
 	local Part = Functions.CreateFloatingPart()
 	Functions.NoClip(true)
 
@@ -186,16 +187,16 @@ Functions.TargetZombies = function(GameValues, SafeTeleport, GetHealable)
 
 				local Healing = false
 				RunService:BindToRenderStep('ShootZombie', 2, function()
-					if Zombie and Zombie.Parent and Zombie.PrimaryPart then
-						Part.CFrame = Zombie.PrimaryPart.CFrame * CFrame.new(0, 6, 0)
+					if Zombie and Zombie.Parent and Zombie.PrimaryPart and Character and Character.Parent and Character.PrimaryPart then
+						Part.CFrame = Zombie.PrimaryPart.CFrame * CFrame.new(0, 8, 0)
 						if not Healing then
-							SafeTeleport(Character, Part.CFrame * CFrame.new(math.random(-3, 3), 3.5, math.random(-3, 3)))
+							SafeTeleport(Character, Part.CFrame * CFrame.new(math.random(-3, 3), 3.8, math.random(-3, 3)))
 						end
 					end
 				end)
 
 				while Zombie and Zombie.Parent and not Dead and Functions.IsAlive(Character, Humanoid) and GameValues.StageName == 'Game' do
-					Functions.ShootZombie(Zombie)
+					Functions.ShootZombie(Zombie, Settings.TargettingKillZombieRange)
 					if Humanoid.Health <= 50 then
 						Healing = true
 						GetHealable(Character, SafeTeleport, Functions)
