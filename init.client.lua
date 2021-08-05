@@ -126,7 +126,18 @@ if not RunService:IsStudio() then
 	end)
 end
 
+Players.PlayerRemoving:Connect(function(Plr)
+	if Plr == Player then
+		Rejoin()
+	end
+end)
+
 if #Players:GetPlayers() > 1 then warn('Other players!') return end
+
+spawn(function()
+	while wait() do if Player.Parent == nil then wait(1) Rejoin() end end
+end)
+
 ----------------------------------------------
 
 local DataTable = {
@@ -168,7 +179,7 @@ local Games = 0
 GameStuff.Wave.Changed:Connect(function()
 	if GameStuff.Wave.Value == 1 then
 		Games = Games + 1
-
+		warn('Games Completed:', Games)
 		if Games > Settings.GamesBeforeRejoin then
 			Rejoin()
 		end
