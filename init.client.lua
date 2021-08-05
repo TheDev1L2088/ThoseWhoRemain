@@ -89,7 +89,7 @@ spawn(function()
 			for _, Enemy in pairs(Infected:GetChildren()) do
 				if Enemy and Enemy.PrimaryPart then
 					local Distance = (Enemy.PrimaryPart.Position - Player.Character.PrimaryPart.Position).Magnitude
-					if Distance <= 15 then
+					if Distance <= 30 then
 						Functions.ShootZombie(Enemy)
 					end
 				end
