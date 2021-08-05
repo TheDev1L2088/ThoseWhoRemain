@@ -109,7 +109,16 @@ local GetLastEquipped = function()
 	return Data.LastEquipped, WeaponModel, WeaponStats
 end
 
-Functions.ShootZombie = function(AI, Range)
+local Headshot = function(WeaponStats, HeadChance)
+	local r = math.random(1, HeadChance)
+	if r == 1 then
+		return WeaponStats.Damage * 2.5 * 1, 'Headshot'
+	else
+		return WeaponStats.Damage, nil
+	end
+end
+
+Functions.ShootZombie = function(AI, Range, HeadChance)
 	if not Range then Range = 20 end
 	local WeaponList = Fire2[5]
 	local LastEquipped, WeaponModel, WeaponStats = GetLastEquipped()
@@ -122,19 +131,20 @@ Functions.ShootZombie = function(AI, Range)
             ["Type"] = "Fire",
             ["RecoilScale"] = 1,
             ["RandomX"] = 0,
-            ["Mag"] = Weapon.Pool,
+            ["Mag"] = Weapon.Mag,
             ["PosCF"] = CFrame.new(-57.0553169, 45.1759377, 51.003006, 0.533760428, 0.129877284, -0.835602522, 0.00888907537, 0.987218976, 0.159121037, 0.845589042, -0.0923602507, 0.525783837),
             ["Direction"] = Vector3.new(0.83560252189636, -0.15912103652954, -0.52578383684158)
         }
     )
 
+	local Damage, Special = Headshot(WeaponStats, HeadChance)
 	local AILists = {
 		{
 			{
 				["AI"] = AI,
 				["Velocity"] = Vector3.new(125.34039306641, -23.868158340454, -78.867584228516),
-				["Special"] = "Headshot",
-				["Damage"] = WeaponStats.Damage * 2.5 * 1
+				["Special"] = Special,
+				["Damage"] = Damage,
 			},
 		}
 	}
@@ -151,11 +161,12 @@ Functions.ShootZombie = function(AI, Range)
 					AILists[ListKey] = {}
 					List = AILists[ListKey]
 				end
+				local AIDamage, AISpecial = Headshot(WeaponStats, HeadChance)
                 table.insert(List, {
                     ["AI"] = Enemy,
                     ["Velocity"] = Vector3.new(125.34039306641, -23.868158340454, -78.867584228516),
-                    ["Special"] = "Headshot",
-                    ["Damage"] = WeaponStats.Damage * 2.5 * 1
+                    ["Special"] = AISpecial,
+                    ["Damage"] = AIDamage
                 })
             end
         end
@@ -205,7 +216,7 @@ Functions.TargetZombies = function(GameValues, SafeTeleport, GetHealable, Settin
 				end)
 
 				while Zombie and Zombie.Parent and not Dead and Functions.IsAlive(Character, Humanoid) and GameValues.StageName == 'Game' do
-					Functions.ShootZombie(Zombie, Settings.TargettingKillZombieRange)
+					Functions.ShootZombie(Zombie, Settings.TargettingKillZombieRange, Settings.HeadChance)
 					if Humanoid.Health <= Settings.LookForHeal then
 						Healing = true
 						GetHealable(Character, SafeTeleport, Functions)

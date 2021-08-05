@@ -1,4 +1,6 @@
 
+wait(10) if game.PlaceId ~= 488667523 then warn('Not Those Who Remain') return end
+
 local Settings = {
 	SafeHeight = 12.5, -- how high up from secure objectives
 	LookForHeal = 75, -- at how much health should it look for bandages/medkit
@@ -6,6 +8,7 @@ local Settings = {
 	TargettingKillZombieRange = 30,
 	GetBodyArmor = true,
 	GamesBeforeRejoin = 3,
+	HeadChance = 3,
 }
 
 ----------------------------------------------
@@ -14,9 +17,9 @@ local Settings = {
 local Workspace = game:GetService('Workspace')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
 local RunService = game:GetService('RunService')
-local Player = game:GetService('Players').LocalPlayer
+local Players = game:GetService('Players')
 
-if game.PlaceId ~= 488667523 then return end
+local Player = Players.LocalPlayer
 
 local World = Workspace:WaitForChild('World')
 local ObjectiveFolder = World:WaitForChild('Objectives')
@@ -46,7 +49,10 @@ end
 local Objectives = Import('Objectives')
 local Teleport = Import('SafeTeleport')
 local Functions = Import('Functions')
-local Combat = Import('Combat') -- runs all combat-related stuff
+
+spawn(function()
+	Import('Combat') -- runs all combat-related stuff
+end)
 
 ----------------------------------------------
 --// Anti AFK
@@ -120,6 +126,7 @@ if not RunService:IsStudio() then
 	end)
 end
 
+if #Players:GetPlayers() > 1 then warn('Other players!') return end
 ----------------------------------------------
 
 local DataTable = {
@@ -146,7 +153,7 @@ spawn(function()
 				if Enemy and Enemy.PrimaryPart then
 					local Distance = (Enemy.PrimaryPart.Position - Player.Character.PrimaryPart.Position).Magnitude
 					if Distance <= Settings.ObjectiveKillZombieRange then
-						Functions.ShootZombie(Enemy)
+						Functions.ShootZombie(Enemy, Settings.ObjectiveKillZombieRange, Settings.HeadChance)
 					end
 				end
 				if not table.find(FightStatuses, Status) or not Player.Character or not Player.Character.PrimaryPart or StageName.Value ~= 'Game' then
