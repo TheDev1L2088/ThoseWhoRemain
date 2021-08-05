@@ -186,6 +186,14 @@ GameStuff.Wave.Changed:Connect(function()
 	end
 end)
 
+game:GetService("ReplicatedStorage").RE:FireServer(
+    "ChangeValue",
+    {
+        ["Value"] = true,
+        ["Obj"] = Player:WaitForChild('TempStats').Ready
+    }
+)
+
 while wait() do
 	if StageName.Value == 'Game' then
 		if Settings.GetBodyArmor then
