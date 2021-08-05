@@ -1,9 +1,11 @@
+
 local Settings = {
-	SafeHeight = 13, -- how high up from secure objectives
+	SafeHeight = 12.5, -- how high up from secure objectives
 	LookForHeal = 75, -- at how much health should it look for bandages/medkit
-	ObjectiveKillZombieRange = 35,
+	ObjectiveKillZombieRange = 60,
 	TargettingKillZombieRange = 30,
 	GetBodyArmor = true,
+	GamesBeforeRejoin = 3,
 }
 
 ----------------------------------------------
@@ -13,6 +15,8 @@ local Workspace = game:GetService('Workspace')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
 local RunService = game:GetService('RunService')
 local Player = game:GetService('Players').LocalPlayer
+
+if game.PlaceId ~= 488667523 then return end
 
 local World = Workspace:WaitForChild('World')
 local ObjectiveFolder = World:WaitForChild('Objectives')
@@ -42,7 +46,26 @@ end
 local Objectives = Import('Objectives')
 local Teleport = Import('SafeTeleport')
 local Functions = Import('Functions')
+local Combat = Import('Combat') -- runs all combat-related stuff
 
+----------------------------------------------
+--// Anti AFK
+
+local VirtualUser = game:GetService('VirtualUser')
+
+if not RunService:IsStudio() then
+	for index, value in next, getconnections(Player.Idled) do
+		value:Disable()
+	end
+
+	Player.Idled:Connect(function()
+		VirtualUser:CaptureController()
+		VirtualUser:ClickButton2(Vector2.new())
+		VirtualUser:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+		wait(1)
+		VirtualUser:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+	end)
+end
 
 ----------------------------------------------
 --// Main
@@ -68,6 +91,36 @@ for _, V in pairs(GameStuff:GetChildren()) do
 		end)
 	end
 end
+
+----------------------------------------------
+--// Stop client from reporting to anti cheat
+
+local Rejoin = function()
+	game:GetService('TeleportService'):Teleport(game.PlaceId, game.JobId)
+end
+
+if not RunService:IsStudio() then
+	local mt = getrawmetatable(game)
+
+	local old
+	old = hookfunction(mt.__namecall, function(...)
+		if checkcaller() then return old(...) end
+
+		local Args = {...}
+		local Self = select(1, ...)
+		local NamecallMethod = getnamecallmethod()
+
+
+		if NamecallMethod == 'FireServer' then
+			if Args[2] and Args[2] == 'RejoinK' then spawn(Rejoin) return wait(9e9) end
+			if Args[2] and Args[2] == 'CheatKick' then spawn(Rejoin) return wait(9e9) end
+		end
+
+		return old(...)
+	end)
+end
+
+----------------------------------------------
 
 local DataTable = {
 	GameValues = GameValues,
@@ -100,6 +153,17 @@ spawn(function()
 					break
 				end
 			end
+		end
+	end
+end)
+
+local Games = 0
+GameStuff.Wave.Changed:Connect(function()
+	if GameStuff.Wave.Value == 1 then
+		Games = Games + 1
+
+		if Games > Settings.GamesBeforeRejoin then
+			Rejoin()
 		end
 	end
 end)
