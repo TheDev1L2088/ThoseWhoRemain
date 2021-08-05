@@ -36,6 +36,15 @@ Functions.CreateFloatingPart = function()
 	return Part
 end
 
+Functions.GetArmor = function()
+	if Player and Player.Character then
+		local Armor = Player.Character:WaitForChild('Armor')
+		return Armor.Value
+	else
+		return nil
+	end
+end
+
 Functions.Pickup = function(Interact)
 	InteractionService.TryInteract:FireServer()
 	local Data = Interact.ReturnTarget()

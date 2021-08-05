@@ -41,9 +41,29 @@ local GetHealable = function(Character, Teleport, Functions)
 	end
 end
 
+local GetArmor = function(Character, Teleport, Functions)
+	local ArmorItem = nil
+	for _, Item in pairs(Items:GetChildren()) do
+		if Item.Name == 'Body Armor' and Item.PrimaryPart then
+			ArmorItem = Item
+			break
+		end
+	end
+
+	if ArmorItem then
+		local CF = ArmorItem.PrimaryPart.CFrame * CFrame.new(0, 5, 0)
+		Teleport(Character, CF)
+
+		wait()
+
+		Functions.Pickup(Functions.GetModule('Interact'))
+	end
+end
+
 local Objs = {
 	ObjectiveService = ObjectiveService,
 	GetHealable = GetHealable,
+	GetArmor = GetArmor,
 	List = {
 		['Tundra'] = {
 			function(Object, Data)

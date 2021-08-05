@@ -3,6 +3,7 @@ local Settings = {
 	LookForHeal = 75, -- at how much health should it look for bandages/medkit
 	ObjectiveKillZombieRange = 35,
 	TargettingKillZombieRange = 30,
+	GetBodyArmor = true,
 }
 
 ----------------------------------------------
@@ -105,6 +106,13 @@ end)
 
 while wait() do
 	if StageName.Value == 'Game' then
+		if Settings.GetBodyArmor then
+			local Armor = Functions.GetArmor()
+			if Armor ~= nil and Armor <= 0 then
+				Objectives.GetArmor(Player.Character, Teleport, Functions)
+				wait()
+			end
+		end
 		for _, Objective in pairs(ObjectiveFolder:GetChildren()) do
 			local CompleteObjective = Objectives.List[Objective.Name]
 			if CompleteObjective and CompleteObjective[2](Objective, DataTable) then
