@@ -1,4 +1,4 @@
-
+repeat wait() until game:GetService('Players') and game:GetService('Players').LocalPlayer
 wait(10) if game.PlaceId ~= 488667523 then warn('Not Those Who Remain') return end
 
 local Settings = {
@@ -18,8 +18,6 @@ local Workspace = game:GetService('Workspace')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
 local RunService = game:GetService('RunService')
 local Players = game:GetService('Players')
-
-local Player = Players.LocalPlayer
 
 local World = Workspace:WaitForChild('World')
 local ObjectiveFolder = World:WaitForChild('Objectives')
@@ -53,6 +51,8 @@ local Functions = Import('Functions')
 spawn(function()
 	Import('Combat') -- runs all combat-related stuff
 end)
+
+local Player = game:GetService('Players').LocalPlayer
 
 ----------------------------------------------
 --// Anti AFK
