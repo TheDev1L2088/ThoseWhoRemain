@@ -11,6 +11,8 @@ local ObjectiveService = Services:WaitForChild('ObjectiveService')
 local Ignore = Workspace:WaitForChild('Ignore')
 local Items = Ignore:WaitForChild('Items')
 
+local Player = game:GetService('Players').LocalPlayer
+
 local CreateFloatingPart = function()
 	local Part = Instance.new('Part', Ignore)
 	Part.Size = Vector3.new(12, 1, 12)
@@ -25,7 +27,10 @@ local CarryingItem = nil
 ObjectiveService.UpdateCarryingItem.OnClientEvent:Connect(function(Item, Item2)
 	CarryingItem = Item or Item2
 end)
-ObjectiveService.RemoveCarryingItem.OnClientEvent:Connect(function(...)
+ObjectiveService.RemoveCarryingItem.OnClientEvent:Connect(function()
+	CarryingItem = nil
+end)
+Player.CharacterAdded:Connect(function()
 	CarryingItem = nil
 end)
 
