@@ -102,6 +102,9 @@ end
 --// Stop client from reporting to anti cheat
 
 local Rejoin = function()
+	GameValues.StageName = 'Rejoining'
+	StageName.Value = 'Rejoining'
+
 	game:GetService('TeleportService'):Teleport(game.PlaceId, game.JobId)
 end
 
