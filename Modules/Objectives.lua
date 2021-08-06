@@ -183,6 +183,23 @@ local Objs = {
 							if Found then
 								PickupItem(Found)
 								wait(.2)
+
+								if CarryingItem then
+									local TargetPart = nil
+									for _, P in pairs(Object.Parent:GetChildren()) do
+										if P.Name == 'Part' and P:FindFirstChild('DisplayText') then
+											local Display = P:FindFirstChild('DisplayText').Value
+											local PartGoal = DisplayTextToItem(Display)
+
+											if PartGoal == CarryingItem then
+												TargetPart = P
+												break
+											end
+										end
+									end
+
+									if TargetPart then PlaceItem(TargetPart) wait() end
+								end
 							end
 						end
 					end
