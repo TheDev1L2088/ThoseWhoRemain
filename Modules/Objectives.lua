@@ -123,6 +123,13 @@ local Objs = {
 
 				local PickupItem = function(Item)
 					local Tries = 0
+
+					local PickedUp = false
+					spawn(function()
+						ObjectiveService.UpdateCarryingItem.OnClientEvent:Wait()
+						PickedUp = true
+					end)
+
 					repeat wait(.2)
 						Data.Teleport(Character, Item.PrimaryPart.CFrame * CFrame.new(0, 3.5, 0))
 						Data.Functions.PickupObjectiveItem()
@@ -131,7 +138,7 @@ local Objs = {
 							GetHealable(Character, Data.Teleport, Data.Functions)
 						end
 						Tries = Tries + 1
-					until CarryingItem ~= nil or Tries >= 5
+					until CarryingItem ~= nil or Tries >= 5 or PickedUp or not Item.Parent or not Item.PrimaryPart
 					if Tries >= 5 then return false else return true end
 				end
 
@@ -175,6 +182,7 @@ local Objs = {
 
 							if Found then
 								PickupItem(Found)
+								wait(.2)
 							end
 						end
 					end
