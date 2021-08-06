@@ -159,7 +159,7 @@ local Objs = {
 							end
 						end
 
-						if Goals <= 0 then break end
+						if #Goals <= 0 then break end
 
 						local RandomGoal = Goals[math.random(1, #Goals)]
 						if RandomGoal then
