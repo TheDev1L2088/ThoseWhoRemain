@@ -113,7 +113,8 @@ local Objs = {
 								if FoundItem then
 									local PickedUp = false
 									local PickedUpCon = nil
-									PickedUpCon = ObjectiveService.UpdateCarryingItem.OnClientEvent:connect(function()
+									PickedUpCon = ObjectiveService.UpdateCarryingItem.OnClientEvent:connect(function(...)
+										table.foreach({...}, warn)
 										PickedUp = true
 										PickedUpCon:Disconnect()
 									end)

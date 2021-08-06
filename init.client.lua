@@ -102,10 +102,12 @@ end
 --// Stop client from reporting to anti cheat
 
 local Rejoin = function()
-	GameValues.StageName = 'Rejoining'
-	StageName.Value = 'Rejoining'
-
-	game:GetService('TeleportService'):Teleport(game.PlaceId, game.JobId)
+	--[[pcall(function()
+		GameValues.StageName = 'Rejoining'
+		StageName.Value = 'Rejoining'
+	end)
+	
+	game:GetService('TeleportService'):Teleport(game.PlaceId, game.JobId)]]--
 end
 
 if not RunService:IsStudio() then
