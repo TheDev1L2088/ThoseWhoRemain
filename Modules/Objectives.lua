@@ -198,7 +198,7 @@ local Objs = {
 										end
 									end
 
-									if TargetPart then PlaceItem(TargetPart) wait() end
+									if TargetPart then PlaceItem(TargetPart) wait() else warn('No part found for picked up') end
 								end
 							end
 						end
