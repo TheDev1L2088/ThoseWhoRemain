@@ -21,6 +21,14 @@ local CreateFloatingPart = function()
 	return Part
 end
 
+local CarryingItem = nil
+ObjectiveService.UpdateCarryingItem.OnClientEvent:Connect(function(Item, Item2)
+	CarryingItem = Item or Item2
+end)
+ObjectiveService.RemoveCarryingItem.OnClientEvent:Connect(function(...)
+	CarryingItem = nil
+end)
+
 local Healable = {'Medkit', 'Bandages'}
 local GetHealable = function(Character, Teleport, Functions)
 	local HealItem = nil
@@ -66,6 +74,123 @@ local Objs = {
 	GetArmor = GetArmor,
 	List = {
 		['Tundra'] = {
+			function(Object, Data)
+				local Player, Character, Humanoid = Data.Player, Data.Character(), Data.Humanoid()
+				if not Data.Functions.IsAlive(Character, Humanoid) then return false end
+
+				local Completed = nil
+				local Con = nil
+
+				local HeadLights = Object:FindFirstChild('HeadLights')
+				if not HeadLights then return false end
+				local SpotLight = HeadLights:FindFirstChild('SpotLight')
+				if not SpotLight then return false end
+
+				Con = ObjectiveService.ObjectiveCompleted.OnClientEvent:connect(function()
+					Completed = true
+					Con:Disconnect()
+				end)
+
+				Data.Functions.NoClip(true)
+
+				local DisplayTextToItem = function(Display)
+					if Display == 'TIRE REQUIRED' then
+						return Object.Name .. ' Wheel'
+					elseif string.find(Display, 'FUEL') then
+						return 'Jerry Can'
+					elseif string.find(Display, 'SPARK') then
+						return 'Spark Plug'
+					end
+					return nil
+				end
+
+				local PlaceItem = function(Part)
+					Data.Teleport(Character, Part.CFrame)
+					wait(.2)
+
+					spawn(Data.Functions.PlaceItem)
+					local Tries = 0
+					repeat wait(.1)
+						Tries = Tries + 1
+					until CarryingItem == nil or Tries >= 5
+					if Tries >= 5 then return false else return true end
+				end
+
+				local PickupItem = function(Item)
+					local Tries = 0
+					repeat wait(.2)
+						Data.Teleport(Character, Item.PrimaryPart.CFrame * CFrame.new(0, 3.5, 0))
+						Data.Functions.PickupObjectiveItem()
+
+						if Humanoid.Health <= Data.Settings.LookForHeal then
+							GetHealable(Character, Data.Teleport, Data.Functions)
+						end
+						Tries = Tries + 1
+					until CarryingItem ~= nil or Tries >= 5
+					if Tries >= 5 then return false else return true end
+				end
+
+				while not Completed and Data.Functions.IsAlive(Character, Humanoid) and SpotLight.Enabled == false and Data.GameValues.StageName == 'Game' do
+					if CarryingItem then
+						local TargetPart = nil
+						for _, P in pairs(Object.Parent:GetChildren()) do
+							if P.Name == 'Part' and P:FindFirstChild('DisplayText') then
+								local Display = P:FindFirstChild('DisplayText').Value
+								local PartGoal = DisplayTextToItem(Display)
+
+								if PartGoal == CarryingItem then
+									TargetPart = P
+									break
+								end
+							end
+						end
+
+						if TargetPart then PlaceItem(TargetPart) end
+					else
+						local Goals = {}
+						for _, Part in pairs(Object.Parent:GetChildren()) do
+							if Part.Name == 'Part' and Part:FindFirstChild('DisplayText') then
+								table.insert(Goals, DisplayTextToItem(Part:FindFirstChild('DisplayText').Value))
+							end
+						end
+
+						if Goals <= 0 then break end
+
+						local RandomGoal = Goals[math.random(1, #Goals)]
+						if RandomGoal then
+							local ItemName = RandomGoal
+
+							local Found = nil
+							for _, Item in pairs(Object.Parent:GetChildren()) do
+								if Item.Name == ItemName and Item.PrimaryPart and not Item:FindFirstChild('Debounce') then
+									Found = Item
+									break
+								end
+							end
+
+							if Found then
+								PickupItem(Found)
+							end
+						end
+					end
+					wait()
+				end
+
+				wait()
+
+				Data.Functions.NoClip(false)
+				if Con then Con:Disconnect() end
+
+				return true
+			end, function(Object, Data)
+				local HeadLights = Object:FindFirstChild('HeadLights')
+				if not HeadLights then return false end
+				local SpotLight = HeadLights:FindFirstChild('SpotLight')
+				if not SpotLight then return false end
+				return SpotLight.Enabled == false
+			end
+		},
+		['Tundrax'] = {
 			function(Object, Data)
 				local Player, Character, Humanoid = Data.Player, Data.Character(), Data.Humanoid()
 				if not Data.Functions.IsAlive(Character, Humanoid) then return false end
