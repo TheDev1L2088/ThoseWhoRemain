@@ -157,7 +157,7 @@ local Objs = {
 							end
 						end
 
-						if TargetPart then PlaceItem(TargetPart) wait() else warn('No part found for picked up (1)') end
+						if TargetPart then PlaceItem(TargetPart) wait() else warn('No part found for picked up (1)', CarryingItem) end
 					else
 						local Goals = {}
 						for _, Part in pairs(Object.Parent:GetChildren()) do
@@ -198,7 +198,7 @@ local Objs = {
 										end
 									end
 
-									if TargetPart then PlaceItem(TargetPart) wait() else warn('No part found for picked up (2)') end
+									if TargetPart then PlaceItem(TargetPart) wait() else warn('No part found for picked up (2)', CarryingItem) end
 								end
 							end
 						end
