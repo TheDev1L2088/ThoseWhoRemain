@@ -25,7 +25,7 @@ end
 
 local CarryingItem = nil
 ObjectiveService.UpdateCarryingItem.OnClientEvent:Connect(function(Item, Item2)
-	CarryingItem = Item or Item2
+	CarryingItem = Item2 or Item
 end)
 ObjectiveService.RemoveCarryingItem.OnClientEvent:Connect(function()
 	CarryingItem = nil
@@ -157,7 +157,7 @@ local Objs = {
 							end
 						end
 
-						if TargetPart then PlaceItem(TargetPart) end
+						if TargetPart then PlaceItem(TargetPart) wait() else warn('No part found for picked up (1)') end
 					else
 						local Goals = {}
 						for _, Part in pairs(Object.Parent:GetChildren()) do
@@ -198,7 +198,7 @@ local Objs = {
 										end
 									end
 
-									if TargetPart then PlaceItem(TargetPart) wait() else warn('No part found for picked up') end
+									if TargetPart then PlaceItem(TargetPart) wait() else warn('No part found for picked up (2)') end
 								end
 							end
 						end
