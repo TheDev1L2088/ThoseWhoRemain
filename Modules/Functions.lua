@@ -157,7 +157,7 @@ Functions.ShootZombie = function(AI, Range, HeadChance)
 	local MaxPerList = 5
 	local ListKey = 1
 	for _, Enemy in pairs(Infected:GetChildren()) do
-        if Enemy and Enemy.PrimaryPart then
+        if Enemy and Enemy.PrimaryPart and AI and AI.Parent and AI.PrimaryPart then
             local Distance = (AI.PrimaryPart.Position - Enemy.PrimaryPart.Position).Magnitude
             if Distance <= Range then
 				local List = AILists[ListKey]
