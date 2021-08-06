@@ -25,6 +25,7 @@ end
 
 local CarryingItem = nil
 ObjectiveService.UpdateCarryingItem.OnClientEvent:Connect(function(Item, Item2)
+	warn(Item, '+', Item2)
 	CarryingItem = Item2 or Item
 end)
 ObjectiveService.RemoveCarryingItem.OnClientEvent:Connect(function()
