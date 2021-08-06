@@ -26,6 +26,73 @@ local Ignore = Workspace:WaitForChild('Ignore')
 
 local Functions = {}
 
+local Angles = {
+	{
+		Angle = {
+			y = -0.0061086523819802,
+			x = -3.1442367704589,
+		},
+		ToAngle = {
+			y = 0,
+			x = 0,
+		}
+	},
+	{
+		Angle = {
+			y = -1.4835298641952,
+			x = -0.0043894461211434,
+		},
+		ToAngle = {
+			y = 0,
+			x = 0,
+		}
+	},
+	{
+		Angle = {
+			y = 0,
+			x = -0.87269641190591,
+		},
+		ToAngle = {
+			y = 0,
+			x = 0,
+		}
+	},
+	{
+		Angle = {
+			y = -0.085521133347722,
+			x = 1.5341126265943,
+		},
+		ToAngle = {
+			y = 0,
+			x = 0,
+		}
+	},
+	{
+		Angle = {
+			y = -0.054977871437821,
+			x = 3.1406882030551,
+		},
+		ToAngle = {
+			y = 0,
+			x = 0,
+		}
+	},
+	{
+		Angle = {
+			y = -1.4835298641952,
+			x = 3.9653562746224,
+		},
+		ToAngle = {
+			y = 0,
+			x = 0,
+		}
+	},
+}
+
+Functions.RandomAngle = function()
+	RE:FireServer('GlobalReplicate', Angles[math.random(1, #Angles)])
+end
+
 Functions.CreateFloatingPart = function()
 	local Part = Instance.new('Part', Ignore)
 	Part.Size = Vector3.new(12, 1, 12)
@@ -129,6 +196,8 @@ Functions.ShootZombie = function(AI, Range, HeadChance)
 	local LastEquipped, WeaponModel, WeaponStats = GetLastEquipped()
 	local Weapon = WeaponList[1]
 	if not Weapon or not WeaponModel or not WeaponStats then warn('Weapon not found', LastEquipped, WeaponModel, WeaponStats) return false end
+
+	Functions.RandomAngle() -- make sure to shoot zombies behind, under and etc
 
 	RE:FireServer(
         "GlobalReplicate",
