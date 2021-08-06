@@ -113,8 +113,9 @@ local Objs = {
 								if FoundItem then
 									local PickedUp = false
 									local PickedUpCon = nil
+									local ItemPickedUp = nil
 									PickedUpCon = ObjectiveService.UpdateCarryingItem.OnClientEvent:connect(function(...)
-										table.foreach({...}, warn)
+										ItemPickedUp = select(..., 1)
 										PickedUp = true
 										PickedUpCon:Disconnect()
 									end)
@@ -131,11 +132,33 @@ local Objs = {
 										Attempts += 1
 									until PickedUp or Attempts >= 5 or not Data.Functions.IsAlive(Character, Humanoid) or SpotLight.Enabled == true or Data.GameValues.StageName ~= 'Game'
 
-									if PickedUp then -- Place the object in the bus
+									if PickedUp and ItemPickedUp ~= SearchingFor then
+										Part = nil
+										for _, P in pairs(Object.Parent:GetChildren()) do
+											if P.Name == 'Part' and P:FindFirstChild('DisplayText') then
+												local Display = P:FindFirstChild('DisplayText').Value
+												local PartGoal = nil
+												if Display == 'TIRE REQUIRED' then
+													PartGoal = Object.Name .. ' Wheel'
+												elseif string.find(Display, 'FUEL') then
+													PartGoal = 'Jerry Can'
+												elseif string.find(Display, 'SPARK') then
+													PartGoal = 'Spark Plug'
+												end
+
+												if PartGoal == ItemPickedUp then
+													Part = P
+													break
+												end
+											end
+										end
+									end
+
+									if Part and PickedUp then -- Place the object in the bus
 										Data.Teleport(Character, Part.CFrame)
 										wait(.2)
 										Data.Functions.PlaceItem()
-									else
+									elseif Part then
 										local M = Instance.new('Model', FoundItem)
 										M.Name = 'Debounce'
 										game:GetService('Debris'):AddItem(M, 5)
