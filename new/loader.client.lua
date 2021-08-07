@@ -35,7 +35,7 @@ _G.Import = function(Source)
 	if RunService:IsStudio() then
 		return require(script:WaitForChild(Source))
 	else
-		return loadstring(game:HttpGet(Repo .. 'Modules/' .. Source .. '.lua', true))()
+		return loadstring(game:HttpGet(Repo .. Source .. '.lua', true))()
 	end
 end
 

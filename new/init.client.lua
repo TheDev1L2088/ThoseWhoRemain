@@ -61,10 +61,10 @@ local GameStage = YWR.GameValues.StageName
 --// Imports
 
 local Imports = {}
-YWR.Imports['Functions'] = _G.Import('Modules/Functions')
-YWR.Imports['ObjectiveManager'] = _G.Import('Modules/ObjectiveManager')
-YWR.Imports['StopReporting'] = _G.Import('Modules/StopReporting')
-YWR.Imports['CombatManager'] = _G.Import('Modules/CombatManager')
+Imports['Functions'] = _G.Import('Modules/Functions')
+Imports['ObjectiveManager'] = _G.Import('Modules/ObjectiveManager')
+Imports['StopReporting'] = _G.Import('Modules/StopReporting')
+Imports['CombatManager'] = _G.Import('Modules/CombatManager')
 
 YWR.Imports = Imports
 
