@@ -90,7 +90,7 @@ local Angles = {
 }
 
 Functions.RandomAngle = function()
-	RE:FireServer('GlobalReplicate', Angles[math.random(1, #Angles)])
+	--RE:FireServer('GlobalReplicate', Angles[math.random(1, #Angles)])
 end
 
 Functions.CreateFloatingPart = function()
