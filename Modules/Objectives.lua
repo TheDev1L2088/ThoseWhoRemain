@@ -104,7 +104,7 @@ local Objs = {
 						return Object.Name .. ' Wheel'
 					elseif string.find(Display, 'FUEL') then
 						return 'Jerry Can'
-					elseif string.find(Display, 'SPARK') then
+					elseif string.find(Display, 'SPARK') or Display:sub(5, 9) == 'SPARK' then
 						return 'Spark Plug'
 					end
 					return nil
