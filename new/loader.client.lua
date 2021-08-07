@@ -1,13 +1,6 @@
 local RunService = game:GetService('RunService')
 
-_G.Import = function(Source)
-	local Repo = 'https://raw.githubusercontent.com/RainyLofi/ThoseWhoRemain/main/new/'
-	if RunService:IsStudio() then
-		return require(script:WaitForChild(Source))
-	else
-		return loadstring(game:HttpGet(Repo .. 'Modules/' .. Source .. '.lua', true))()
-	end
-end
+----------------------------------------------
 
 _G.Settings = {
 
@@ -34,5 +27,16 @@ _G.Settings = {
     MaxZombiesPerEvent = 3,
     MaxZombiesPerShot = 10,
 }
+
+----------------------------------------------
+
+_G.Import = function(Source)
+	local Repo = 'https://raw.githubusercontent.com/RainyLofi/ThoseWhoRemain/main/new/'
+	if RunService:IsStudio() then
+		return require(script:WaitForChild(Source))
+	else
+		return loadstring(game:HttpGet(Repo .. 'Modules/' .. Source .. '.lua', true))()
+	end
+end
 
 _G.Import('init.client')
