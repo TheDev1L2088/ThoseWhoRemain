@@ -31,11 +31,15 @@ for _, WeaponObj in pairs(YWR.Weapons:GetChildren()) do
             end
 
             if Weapon.Animations and Weapon.Animations.Reload then -- instant reload
-                local Sequence = Weapon.Animations.Reload.Sequence
-                local FirstAnim = Sequence[1]
-                FirstAnim.Time = 0.1
-                FirstAnim.AddAmmo = {}
-                Weapon.Animations.Reload.Sequence = {FirstAnim}
+                Weapon.Animations.Reload.Sequence = {{
+                    Time = 0.1,
+					Sound = {
+						Played = false,
+						Sound = 'rbxassetid://1425270902',
+						PlaybackSpeed = 1.2
+					},
+					AddAmmo = {},
+                }}
             end
         end
     end
