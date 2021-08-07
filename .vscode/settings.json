@@ -1,0 +1,8 @@
+{
+    "Lua.diagnostics.globals": [
+        "getgenv"
+    ],
+    "Lua.diagnostics.disable": [
+        "undefined-global"
+    ]
+}
