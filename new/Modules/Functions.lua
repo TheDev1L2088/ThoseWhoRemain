@@ -28,12 +28,12 @@ end
 
 Functions.PlaceFort = function(Fort, CFrame)
     YWR.RE:FireServer(
-		"PlaceFortification",
-		{
-			["PlaceCF"] = CFrame,
-			["FortName"] = Fort
-		}
-	)
+        "PlaceFortification",
+        {
+            ["PlaceCF"] = CFrame,
+            ["FortName"] = Fort
+        }
+    )
 end
 
 Functions.GetArmor = function()
@@ -46,16 +46,16 @@ Functions.GetArmor = function()
 end
 
 Functions.Pickup = function(Interact)
-	YWR.InteractionService.TryInteract:FireServer()
-	local Data = Interact.ReturnTarget()
-	if Data and Data.CanInteract then
-		YWR.RF:InvokeServer(
-			'CheckInteract',
-			{
-				['Target'] = Data
-			}
-		)
-	end
+    YWR.InteractionService.TryInteract:FireServer()
+    local Data = Interact.ReturnTarget()
+    if Data and Data.CanInteract then
+        YWR.RF:InvokeServer(
+            'CheckInteract',
+            {
+                ['Target'] = Data
+            }
+        )
+    end
 end
 
 Functions.PlaceItem = function()
@@ -72,40 +72,40 @@ Functions.NoClip = function(state)
 end
 
 RunService.Stepped:Connect(function()
-	if Player and Player.Character and Player.Character:FindFirstChildOfClass('Humanoid') then
-		local Character, Humanoid = Player.Character, Player.Character:FindFirstChildOfClass('Humanoid')
-		if Functions.IsAlive(Character, Humanoid) and Noclipped then
-			for _, child in pairs(Character:GetDescendants()) do
-				if child:IsA("BasePart") and child.CanCollide == true then
-					child.CanCollide = false
-				end
-			end
-		end
-	end
+    if Player and Player.Character and Player.Character:FindFirstChildOfClass('Humanoid') then
+        local Character, Humanoid = Player.Character, Player.Character:FindFirstChildOfClass('Humanoid')
+        if Functions.IsAlive(Character, Humanoid) and Noclipped then
+            for _, child in pairs(Character:GetDescendants()) do
+                if child:IsA("BasePart") and child.CanCollide == true then
+                    child.CanCollide = false
+                end
+            end
+        end
+    end
 end)
 
 Functions.GetModule = function(Module)
-	return require(YWR.Client:WaitForChild(Module))
+    return require(YWR.Client:WaitForChild(Module))
 end
 
 Functions.ShootTank = function(Object)
-	YWR.ObjectiveService.HitDamageable:FireServer(
-		Object:FindFirstChild('Body'):FindFirstChild('Trailer'):FindFirstChild('Tank')
-	)
+    YWR.ObjectiveService.HitDamageable:FireServer(
+        Object:FindFirstChild('Body'):FindFirstChild('Trailer'):FindFirstChild('Tank')
+    )
 end
 
 Functions.HeadshotChance = function(WeaponStats, AI)
-	local r, HeadChance = 1, _G.Settings.HeadChance
-	if HeadChance ~= 1 then
-		r = math.random(1, HeadChance)
-	end
+    local r, HeadChance = 1, _G.Settings.HeadChance
+    if HeadChance ~= 1 then
+        r = math.random(1, HeadChance)
+    end
 
-	if AI.Name == 'Burster' or AI.Name == 'Bloater' or AI.Name == 'Riot' then r = 1 end
-	if r == 1 then
-		return WeaponStats.Damage * 2.5 * 1, 'Headshot'
-	else
-		return WeaponStats.Damage, nil
-	end
+    if AI.Name == 'Burster' or AI.Name == 'Bloater' or AI.Name == 'Riot' then r = 1 end
+    if r == 1 then
+        return WeaponStats.Damage * 2.5 * 1, 'Headshot'
+    else
+        return WeaponStats.Damage, nil
+    end
 end
 
 Functions.GetWeaponModel = function()
@@ -123,7 +123,7 @@ end
 
 Functions.ShootZombie = function(AI, Range)
     local WeaponList = YWR.Fire2[5]
-	local Weapon = WeaponList[1]
+    local Weapon = WeaponList[1]
 
     local WeaponModel, WeaponStats = Functions.GetWeaponModel()
     if not WeaponModel then warn('No weapon model!') return end
@@ -144,30 +144,30 @@ Functions.ShootZombie = function(AI, Range)
 
     -- Get all nearby zombies
     local Damage, Special = Functions.HeadshotChance(WeaponStats, AI)
-	local AILists = {
-		{
-			{
-				["AI"] = AI,
-				["Velocity"] = Vector3.new(125.34039306641, -23.868158340454, -78.867584228516),
-				["Special"] = Special,
-				["Damage"] = Damage,
-			},
-		}
-	}
+    local AILists = {
+        {
+            {
+                ["AI"] = AI,
+                ["Velocity"] = Vector3.new(125.34039306641, -23.868158340454, -78.867584228516),
+                ["Special"] = Special,
+                ["Damage"] = Damage,
+            },
+        }
+    }
 
     local MaxPerList = _G.Settings.MaxZombiesPerEvent
-	local ListKey = 1
+    local ListKey = 1
     local ZombieCount = 1
-	for _, Enemy in pairs(YWR.Infected:GetChildren()) do
+    for _, Enemy in pairs(YWR.Infected:GetChildren()) do
         if Enemy and Enemy.PrimaryPart and AI and AI.Parent and AI.PrimaryPart then
             local Distance = (AI.PrimaryPart.Position - Enemy.PrimaryPart.Position).Magnitude
             if Distance <= Range and ZombieCount < _G.Settings.MaxZombiesPerShot then
-				local List = AILists[ListKey]
-				if #List >= MaxPerList then
-					ListKey += 1
-					AILists[ListKey] = {}
-					List = AILists[ListKey]
-				end
+                local List = AILists[ListKey]
+                if #List >= MaxPerList then
+                    ListKey += 1
+                    AILists[ListKey] = {}
+                    List = AILists[ListKey]
+                end
 				local AIDamage, AISpecial = Functions.HeadshotChance(WeaponStats, Enemy)
                 table.insert(List, {
                     ["AI"] = Enemy,
@@ -182,12 +182,12 @@ Functions.ShootZombie = function(AI, Range)
 
     -- Deal damage
     for _, AIList in pairs(AILists) do
-		YWR.RE:FireServer(
-			"aa",
-			{
-				["AIs"] = AIList
-			}
-		)
+        YWR.RE:FireServer(
+            "aa",
+            {
+                ["AIs"] = AIList
+            }
+        )
 	end
 
 
