@@ -143,6 +143,8 @@ local AFKFarm = function()
                 warn('Here14')
                 Data.Run(Object)
             end
+        else
+            warn(GameValues.GameStage, Functions.IsAlive())
         end
     end
     warn('Here12')
