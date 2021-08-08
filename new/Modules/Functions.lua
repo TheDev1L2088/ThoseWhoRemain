@@ -256,7 +256,7 @@ Functions.IsAlive = function()
     local Character = YWR.Character()
     if Character and Character:FindFirstChildOfClass('Humanoid') then
         local Humanoid = Character:FindFirstChildOfClass('Humanoid')
-        return (Humanoid.Health > 0 and Character:FindFirstChild('HumanoidRootPart') and Character.PrimaryPart and Character.Parent) and Humanoid.Health or false
+        return (Humanoid.Health > 0 and Humanoid.WalkSpeed > 0 and Character:FindFirstChild('HumanoidRootPart') and Character.PrimaryPart and Character.Parent) and Humanoid.Health or false
     end
     return nil
 end

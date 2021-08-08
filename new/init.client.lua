@@ -56,7 +56,6 @@ for _, V in pairs(YWR.GameStuff:GetChildren()) do
 	end
 end
 YWR.GameValues = GameValues
-local GameStage = YWR.GameValues.StageName
 
 ----------------------------------------------
 --// Imports
@@ -68,13 +67,73 @@ Imports['StopReporting'] = _G.Import('Modules/StopReporting')
 Imports['CombatManager'] = _G.Import('Modules/CombatManager')
 
 YWR.Imports = Imports
+local GetObjective = Imports['ObjectiveManager']
+local Functions = Imports['Functions']
 
 ----------------------------------------------
 --// Main
 
+local KillZombies = function()
+    local Part = Functions.CreateFloatingPart()
+    Functions.NoClip(true)
+
+    while GameValues.StageName == 'Game' and Functions.IsAlive() do
+        local Character = YWR.Character()
+        local Humanoid = Character:FindFirstChildOfClass('Humanoid')
+
+        for _, Zombie in pairs(YWR.Infected:GetChildren()) do
+			if Zombie and Zombie.PrimaryPart and Zombie:FindFirstChildOfClass('Humanoid') and Zombie:FindFirstChildOfClass('Humanoid').Health > 0 then
+                local Dead, DiedCon = false, nil
+				DiedCon = Zombie:FindFirstChildOfClass('Humanoid').Died:Connect(function()
+					Dead = true
+					DiedCon:Disconnect()
+				end)
+
+                local Healing = false
+                RunService:BindToRenderStep('ShootZombie', 2, function()
+					if Zombie and Zombie.Parent and Zombie.PrimaryPart and Character and Character.Parent and Character.PrimaryPart then
+						Part.CFrame = Zombie.PrimaryPart.CFrame * CFrame.new(0, 8, 0)
+						if not Healing then
+							Functions.Teleport(Character, Part.CFrame * CFrame.new(math.random(-3, 3), 3.8, math.random(-3, 3)))
+						end
+					end
+				end)
+
+                while Zombie and Zombie.Parent and not Dead and Functions.IsAlive(Character, Humanoid) and GameValues.StageName == 'Game' do
+					Functions.ShootZombie(Zombie, _G.Settings.TargettingKillZombieRange)
+					if Humanoid.Health <= _G.Settings.LookForHeal then
+						Healing = true
+						Functions.GetHealable(Character)
+						Healing = false
+					end
+                    wait()
+				end
+
+                RunService:UnbindFromRenderStep('ShootZombie')
+
+				if DiedCon then DiedCon:Disconnect() end
+            end
+            if GameValues.StageName ~= 'Game' or not Functions.IsAlive() then break end
+        end
+        wait()
+    end
+
+    if Part then Part:Destroy() end
+    Functions.NoClip(false)
+
+    return true
+end
+
 local AFKFarm = function()
     while wait() do
-        
+        if GameValues.GameStage == 'Game' and Functions.IsAlive() then
+            local Data, Object = GetObjective()
+            if not Data or not Object then -- Kill zombie afk farm
+                KillZombies()
+            else -- do objective afk farm
+                Data.Run(Object)
+            end
+        end
     end
 end
 

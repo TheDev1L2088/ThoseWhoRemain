@@ -12,6 +12,8 @@ _G.Settings = {
     FortPlaceOffset = -2.4,
     Recoil = 0.01,
     Penetration = 10, -- how many zombies a bullet can shoot through
+    SilentAim = true, -- when you shoot a zombie, it will also hit the zombies around it.
+    SilentAimDistance = 30,
 
     -- Auto farming
     AFKFarmKey = Enum.KeyCode.RightAlt, -- key that needs to be pressed to start farming

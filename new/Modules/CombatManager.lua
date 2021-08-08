@@ -86,7 +86,54 @@ spawn(function()
 end)
 
 ----------------------------------------------
---// Always headshot
+--// Always headshot & silent aim
+
+local DoSilentAim = function(WeaponStats, AI)
+    local Targets = {}
+    for _, Enemy in pairs(YWR.Infected:GetChildren()) do
+        if Enemy and Enemy.PrimaryPart and AI and AI.Parent and AI.PrimaryPart and Enemy ~= AI then
+            local Distance = (AI.PrimaryPart.Position - Enemy.PrimaryPart.Position).Magnitude
+            if Distance <= _G.Settings.SilentAimDistance then
+                table.insert(Targets, Enemy)
+            end
+        end
+    end
+
+    local AILists = {{}}
+    local MaxPerList = _G.Settings.MaxZombiesPerEvent
+    local ListKey = 1
+    local ZombieCount = 1
+    for _, Target in pairs(Targets) do
+        if ZombieCount < _G.Settings.MaxZombiesPerShot then
+            local List = AILists[ListKey]
+            if #List >= MaxPerList then
+                ListKey += 1
+                AILists[ListKey] = {}
+                List = AILists[ListKey]
+            end
+            table.insert(List, {
+                ["AI"] = Target,
+                ["Velocity"] = Vector3.new(125.34039306641, -23.868158340454, -78.867584228516),
+                ["Special"] = 'Headshot',
+                ["Damage"] = WeaponStats.Damage * 2.5 * 1
+            })
+            ZombieCount = ZombieCount + 1
+        end
+    end
+
+    -- Deal damage
+    for _, AIList in pairs(AILists) do
+        if #AIList > 0 then
+            YWR.RE:FireServer(
+                "aa",
+                {
+                    ["AIs"] = AIList
+                }
+            )
+        end
+	end
+
+end
 
 local mt = getrawmetatable(game)
 
@@ -111,6 +158,11 @@ old = hookfunction(mt.__namecall, function(...)
 						AI['Special'] = 'Headshot'
 						AI['Damage'] = WeaponStats.Damage * 2.5 * 1
 					end
+                    if _G.Settings.SilentAim then
+                        pcall(function()
+                            DoSilentAim(WeaponStats, Args[3]['AIs'][1].AI)
+                        end)
+                    end
 					return old(unpack(Args))
 				end
 			end
