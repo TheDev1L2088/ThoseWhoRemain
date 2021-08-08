@@ -57,6 +57,8 @@ for _, V in pairs(YWR.GameStuff:GetChildren()) do
 end
 YWR.GameValues = GameValues
 
+table.foreach(GameValues, warn)
+
 ----------------------------------------------
 --// Imports
 
@@ -129,7 +131,6 @@ end
 
 local StartCon = nil
 local AFKFarm = function()
-    warn('Here10')
     while wait() do
         if GameValues.GameStage == 'Game' and Functions.IsAlive() then
             warn('Here11')
@@ -153,9 +154,7 @@ StartCon = UIS.InputBegan:Connect(function(Input)
         local Key = Input.KeyCode
         if Key == _G.Settings.AFKFarmKey then
             warn('Started AFK Farming!')
-            spawn(function()
-                AFKFarm()
-            end)
+            spawn(AFKFarm)
             StartCon:Disconnect()
         end
     end
