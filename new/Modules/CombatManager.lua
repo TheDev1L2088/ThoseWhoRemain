@@ -142,7 +142,7 @@ old = hookfunction(mt.__namecall, function(...)
                     if _G.Settings.SilentAim then
                         spawn(function()
                             local r, e = pcall(function()
-                                DoSilentAim(WeaponStats, Args[3]['AIs'][1].AI)
+                                --DoSilentAim(WeaponStats, Args[3]['AIs'][1].AI)
                             end)
                             if e then warn(e) end
                         end)
