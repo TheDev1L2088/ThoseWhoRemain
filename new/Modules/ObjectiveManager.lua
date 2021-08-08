@@ -16,14 +16,14 @@ local ObjectiveFolder, ObjectiveEntities = YWR.ObjectiveFolder, YWR.EntityObject
 --// Load objectives
 
 local Objectives = {
-    ['Tundra'] = 'Car',
-    ['Silverado'] = 'Car',
+    --['Tundra'] = 'Car',
+    --['Silverado'] = 'Car',
 
-    ['Ammo'] = 'Sit',
-    ['Medical'] = 'Sit',
-    ['Radio'] = 'Sit',
+    --['Ammo'] = 'Sit',
+    --['Medical'] = 'Sit',
+    --['Radio'] = 'Sit',
 
-    ['Bus'] = 'Bus',
+    --['Bus'] = 'Bus',
 
     ['EscortChar'] = 'Escort',
 
