@@ -155,7 +155,10 @@ StartCon = UIS.InputBegan:Connect(function(Input)
         local Key = Input.KeyCode
         if Key == _G.Settings.AFKFarmKey then
             warn('Started AFK Farming!')
-            AFKFarm()
+            spawn(function()
+                AFKFarm()
+            end)
+            StartCon:Disconnect()
         end
     end
 end)
