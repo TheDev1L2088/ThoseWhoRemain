@@ -6,8 +6,8 @@ _G.Settings = {
 
     -- Combat
     FortKeybinds = {
-        [Enum.KeyCode.C] = 'Barbed Wire',
-        [Enum.KeyCode.V] = 'Clap Bomb'
+        ['Barbed Wire'] = Enum.KeyCode.C,
+        ['Clap Bomb'] = Enum.KeyCode.V
     },
     FortPlaceOffset = -2.4,
     Recoil = 0.01,

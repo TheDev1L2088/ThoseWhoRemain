@@ -159,10 +159,12 @@ old = hookfunction(mt.__namecall, function(...)
 						AI['Damage'] = WeaponStats.Damage * 2.5 * 1
 					end
                     if _G.Settings.SilentAim then
-                        local r, e = pcall(function()
-                            DoSilentAim(WeaponStats, Args[3]['AIs'][1].AI)
+                        spawn(function()
+                            local r, e = pcall(function()
+                                DoSilentAim(WeaponStats, Args[3]['AIs'][1].AI)
+                            end)
+                            if e then warn(e) end
                         end)
-                        if e then warn(e) end
                     end
 					return old(unpack(Args))
 				end
@@ -177,12 +179,19 @@ end)
 --// Place fortification keybinds
 
 UIS.InputBegan:Connect(function(Input)
-    if Input.UserInputType == Enum.UserInputType.Keyboard then
+    if Input.UserInputType == Enum.UserInputType.Keyboard and Input.KeyCode then
         local Key = Input.KeyCode
-        local Fort = _G.Settings.FortKeybinds[Key]
+        local Fort = nil
+
+        for Name, Bind in pairs(_G.Settings.FortKeybinds) do
+            if Bind == Key then
+                Fort = Name
+                break
+            end
+        end
 
         if Fort and YWR.Imports.Functions.IsAlive() then
-            local HRP = Player.Character.PrimaryPart
+            local HRP = Player.Character:FindFirstChild('HumanoidRootPart')
             local CF = HRP.CFrame * CFrame.new(0, _G.Settings.FortPlaceOffset, 0)
             YWR.Imports.Functions.PlaceFort(Fort, CF)
         end
