@@ -29,7 +29,6 @@ Objective.Check = function(Object)
 end
 
 Objective.Run = function(Object)
-    local Humanoid = Character():FindFirstChildOfClass('Humanoid')
     local Target = Object.PrimaryPart
     local Completed, Con
 

@@ -10,8 +10,10 @@ local Players = game:GetService('Players')
 local Player = Players.LocalPlayer
 
 local YWR = _G.YWR
+local ObjectiveFolder, ObjectiveEntities = YWR.ObjectiveFolder, YWR.EntityObjectives
 
 ----------------------------------------------
+--// Load objectives
 
 local Objectives = {
     ['Tundra'] = 'Car',
@@ -29,7 +31,7 @@ local Objectives = {
 }
 
 local ObjectiveFunctions = {} -- acts as cache
-for i, Name in pairs(Objectives) do
+for i, Name in pairs(Objectives) do -- loads all objective functions
     if not ObjectiveFunctions[Name] then
         ObjectiveFunctions[Name] = _G.Import('Modules/Objectives/' .. Name)
     end
@@ -37,6 +39,31 @@ for i, Name in pairs(Objectives) do
 end
 
 ----------------------------------------------
+--// Main
+
+local GetObjective = function()
+    local Objective
+
+    local PossibleObjectives = {}
+    for _, Object in pairs(ObjectiveFolder:GetChildren()) do
+        table.insert(PossibleObjectives, Object)
+    end
+    for _, Object in pairs(ObjectiveEntities:GetChildren()) do
+        table.insert(PossibleObjectives, Object)
+    end
+
+    for _, Object in pairs(PossibleObjectives) do
+        local Data = Objectives[Object.Name]
+        if Data and Data.Check(Object) then
+            Objective = {Data, Object}
+            break
+        end
+    end
+
+    return Objective
+end
+
+----------------------------------------------
 
 warn('ObjectiveManager loaded.')
-return Objectives
+return GetObjective
