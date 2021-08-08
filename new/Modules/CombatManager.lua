@@ -40,7 +40,20 @@ for _, WeaponObj in pairs(YWR.Weapons:GetChildren()) do
 					},
 					AddAmmo = {},
                 }}
+
+                local ReloadAnim = Weapon.Animations.Reload
+                if ReloadAnim then
+                    for _, Anim in pairs(ReloadAnim.Sequence) do
+                        if Anim.Time >= 0.18 then
+                            Anim.Time = Anim.Time * 0.4
+                        else
+                            Anim.Time = .001
+                        end
+                    end
+                end
             end
+
+
         end
     end
 end

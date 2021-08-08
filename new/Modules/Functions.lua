@@ -26,11 +26,11 @@ Functions.CreateFloatingPart = function()
 	return Part
 end
 
-Functions.PlaceFort = function(Fort, CFrame)
+Functions.PlaceFort = function(Fort, CF)
     YWR.RE:FireServer(
         "PlaceFortification",
         {
-            ["PlaceCF"] = CFrame,
+            ["PlaceCF"] = CF,
             ["FortName"] = Fort
         }
     )
