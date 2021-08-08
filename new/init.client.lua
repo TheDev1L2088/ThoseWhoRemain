@@ -7,6 +7,8 @@ game.PlaceId
 ----------------------------------------------
 --// Startup
 
+wait(1)
+
 local Workspace = game:GetService('Workspace')
 local ReplicatedStorage = game:GetService('ReplicatedStorage')
 local UIS = game:GetService('UserInputService')
@@ -46,8 +48,7 @@ _G.YWR.Character = function() if Player and Player.Character then return Player.
 
 local YWR = _G.YWR -- shortcut
 
-repeat wait() until YWR.GameStuff:FindFirstChild('StageName')
-wait(1)
+YWR.GameStuff:WaitForChild('StageName')
 
 local GameValues = {}
 for _, V in pairs(YWR.GameStuff:GetChildren()) do
@@ -75,6 +76,7 @@ YWR.Imports = Imports
 YWR.FullyImported = true
 local GetObjective = Imports['ObjectiveManager']
 local Functions = Imports['Functions']
+
 ----------------------------------------------
 --// Main
 
