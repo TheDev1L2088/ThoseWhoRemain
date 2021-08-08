@@ -86,35 +86,7 @@ spawn(function()
 end)
 
 ----------------------------------------------
---// Always headshot & silent aim
-
-local DoSilentAim = function(WeaponStats, AI)
-    local Targets = {}
-    local TargetCount = 0
-    for _, Enemy in pairs(YWR.Infected:GetChildren()) do
-        if Enemy and Enemy.PrimaryPart and AI and AI.Parent and AI.PrimaryPart and Enemy ~= AI then
-            local Distance = (AI.PrimaryPart.Position - Enemy.PrimaryPart.Position).Magnitude
-            if Distance <= _G.Settings.SilentAimDistance then
-                if TargetCount >= _G.Settings.MaxZombiesPerEvent then break end
-                table.insert(Targets, {
-                    ["AI"] = Enemy,
-                    ["Velocity"] = Vector3.new(125.34039306641, -23.868158340454, -78.867584228516),
-                    ["Special"] = 'Headshot',
-                    ["Damage"] = WeaponStats.Damage * 2.5 * 1
-                })
-                TargetCount = TargetCount + 1
-            end
-        end
-    end
-
-    YWR.RE:FireServer(
-        "aa",
-        {
-            ["AIs"] = Targets
-        }
-    )
-
-end
+--// Always headshot
 
 local mt = getrawmetatable(game)
 
@@ -139,14 +111,7 @@ old = hookfunction(mt.__namecall, function(...)
 						AI['Special'] = 'Headshot'
 						AI['Damage'] = WeaponStats.Damage * 2.5 * 1
 					end
-                    if _G.Settings.SilentAim then
-                        spawn(function()
-                            local r, e = pcall(function()
-                                DoSilentAim(WeaponStats, Args[3]['AIs'][1].AI)
-                            end)
-                            if e then warn(e) end
-                        end)
-                    end
+                    return old(unpack(Args))
 				end
 			end
 		end

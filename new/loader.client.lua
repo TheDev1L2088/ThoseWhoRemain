@@ -9,7 +9,7 @@ _G.Settings = {
         ['Barbed Wire'] = Enum.KeyCode.C,
         ['Clap Bomb'] = Enum.KeyCode.V
     },
-    FortPlaceOffset = -2.4,
+    FortPlaceOffset = -2.5,
     Recoil = 0.01,
     Penetration = 10, -- how many zombies a bullet can shoot through
     SilentAim = true, -- when you shoot a zombie, it will also hit the zombies around it.
