@@ -119,7 +119,7 @@ end
 local mt = getrawmetatable(game)
 
 local old
-old = hookfunction(mt.__namecall, function(...)
+--[[old = hookfunction(mt.__namecall, function(...)
 	if checkcaller() then return old(...) end
     local Args = {...}
 	local NamecallMethod = getnamecallmethod()
@@ -153,7 +153,7 @@ old = hookfunction(mt.__namecall, function(...)
 	end
 
 	return old(...)
-end)
+end)]]--
 
 ----------------------------------------------
 --// Place fortification keybinds
