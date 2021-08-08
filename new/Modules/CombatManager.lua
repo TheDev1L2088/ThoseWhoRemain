@@ -147,7 +147,6 @@ old = hookfunction(mt.__namecall, function(...)
                             if e then warn(e) end
                         end)
                     end
-					return old(unpack(Args))
 				end
 			end
 		end
