@@ -159,9 +159,10 @@ old = hookfunction(mt.__namecall, function(...)
 						AI['Damage'] = WeaponStats.Damage * 2.5 * 1
 					end
                     if _G.Settings.SilentAim then
-                        pcall(function()
+                        local r, e = pcall(function()
                             DoSilentAim(WeaponStats, Args[3]['AIs'][1].AI)
                         end)
+                        if e then warn(e) end
                     end
 					return old(unpack(Args))
 				end
