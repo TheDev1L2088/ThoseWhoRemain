@@ -130,16 +130,21 @@ end
 local StartCon = nil
 local AFKFarm = function()
     StartCon:Disconnect()
+    warn('Here10')
     while wait() do
         if GameValues.GameStage == 'Game' and Functions.IsAlive() then
+            warn('Here11')
             local Data, Object = GetObjective()
             if not Data or not Object then -- Kill zombie afk farm
+                warn('Here13')
                 KillZombies()
             else -- do objective afk farm
+                warn('Here14')
                 Data.Run(Object)
             end
         end
     end
+    warn('Here12')
 end
 
 StartCon = UIS.InputBegan:Connect(function(Input)
