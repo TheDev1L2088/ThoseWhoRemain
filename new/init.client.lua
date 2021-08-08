@@ -47,11 +47,10 @@ _G.YWR.Character = function() if Player and Player.Character then return Player.
 local YWR = _G.YWR -- shortcut
 
 repeat wait() until YWR.GameStuff:FindFirstChild('StageName')
+wait(1)
 
-warn('g')
 local GameValues = {}
 for _, V in pairs(YWR.GameStuff:GetChildren()) do
-    warn(V)
 	if V:IsA('NumberValue') or V:IsA('StringValue') or V:IsA('BoolValue') then
 		GameValues[V.Name] = V.Value
 		V.Changed:Connect(function()
@@ -85,7 +84,6 @@ local KillZombies = function()
 
     warn('Here')
     while GameValues.StageName == 'Game' and Functions.IsAlive() do
-        warn('Here2')
         local Character = YWR.Character()
         local Humanoid = Character:FindFirstChildOfClass('Humanoid')
 
@@ -125,7 +123,6 @@ local KillZombies = function()
         end
         wait()
     end
-    warn('Here3')
 
     if Part then Part:Destroy() end
     Functions.NoClip(false)
