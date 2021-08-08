@@ -54,7 +54,7 @@ local GetObjective = function()
 
     for _, Object in pairs(PossibleObjectives) do
         local Data = Objectives[Object.Name]
-        if Data and Data.Check(Object) then
+        if Data and Data.Load() and Data.Check(Object) then
             Objective = {Data, Object}
             break
         end

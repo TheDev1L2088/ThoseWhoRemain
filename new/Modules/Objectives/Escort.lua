@@ -9,13 +9,7 @@ local RunService = game:GetService('RunService')
 local Players = game:GetService('Players')
 local Player = Players.LocalPlayer
 
-repeat wait() until _G.YWR and _G.YWR['FullyImported']
-
-local YWR = _G.YWR
-local Character = YWR.Character
-local Functions = YWR.Imports.Functions
-local ObjectiveService = YWR.ObjectiveService
-local GameValues = YWR.GameValues
+local YWR, Character, Functions, ObjectiveService, GameValues
 
 ----------------------------------------------
 --// Main
@@ -24,6 +18,15 @@ local Objective = {}
 
 Objective.Check = function(Object)
     return (Object and Object.Parent ~= nil)
+end
+
+Objective.Load = function()
+    YWR = _G.YWR
+    Character = YWR.Character
+    Functions = YWR.Imports.Functions
+    ObjectiveService = YWR.ObjectiveService
+    GameValues = YWR.GameValues
+	return true
 end
 
 Objective.Run = function(Object)

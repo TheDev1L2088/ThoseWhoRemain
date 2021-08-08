@@ -9,13 +9,7 @@ local RunService = game:GetService('RunService')
 local Players = game:GetService('Players')
 local Player = Players.LocalPlayer
 
-repeat wait() until _G.YWR and _G.YWR['FullyImported']
-
-local YWR = _G.YWR
-local Character = YWR.Character
-local Functions = YWR.Imports.Functions
-local ObjectiveService = YWR.ObjectiveService
-local GameValues = YWR.GameValues
+local YWR, Character, Functions, ObjectiveService, GameValues
 
 ----------------------------------------------
 --// Main
@@ -28,6 +22,15 @@ Objective.Check = function(Object)
     local Trailer = Body:FindFirstChild('Trailer')
     if not Trailer then return false end
     return Trailer:FindFirstChild('Exploded Tank') == nil
+end
+
+Objective.Load = function()
+    YWR = _G.YWR
+    Character = YWR.Character
+    Functions = YWR.Imports.Functions
+    ObjectiveService = YWR.ObjectiveService
+    GameValues = YWR.GameValues
+    return true
 end
 
 Objective.Run = function(Object)
