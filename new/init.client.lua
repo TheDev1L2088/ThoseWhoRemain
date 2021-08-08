@@ -48,8 +48,10 @@ local YWR = _G.YWR -- shortcut
 
 repeat wait() until YWR.GameStuff:FindFirstChild('StageName')
 
+warn('g')
 local GameValues = {}
 for _, V in pairs(YWR.GameStuff:GetChildren()) do
+    warn(V)
 	if V:IsA('NumberValue') or V:IsA('StringValue') or V:IsA('BoolValue') then
 		GameValues[V.Name] = V.Value
 		V.Changed:Connect(function()
