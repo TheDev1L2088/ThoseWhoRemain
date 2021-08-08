@@ -11,7 +11,9 @@ local Player = Players.LocalPlayer
 
 local YWR = _G.YWR
 local Character = YWR.Character
+warn('Here3')
 local Functions = YWR.Imports.Functions
+warn('Here4')
 local ObjectiveService = YWR.ObjectiveService
 local GameValues = YWR.GameValues
 
