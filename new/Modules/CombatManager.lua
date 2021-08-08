@@ -31,12 +31,7 @@ for _, WeaponObj in pairs(YWR.Weapons:GetChildren()) do
             end
 
             if Weapon.Animations and Weapon.Animations.Reload then -- instant reload
-                local Reload = Weapon.Animations.Reload
-                for i, Anim in pairs(Reload.Sequence) do
-                    if i > 1 then table.remove(Reload.Sequence, i) end
-                end
-
-                Reload.Sequence[1].AddAmmo = {}
+                Weapon.Animations.Reload.Sequence[1].AddAmmo = {}
             end
         end
     end
