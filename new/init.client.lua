@@ -124,7 +124,9 @@ local KillZombies = function()
     return true
 end
 
+local StartCon = nil
 local AFKFarm = function()
+    StartCon:Disconnect()
     while wait() do
         if GameValues.GameStage == 'Game' and Functions.IsAlive() then
             local Data, Object = GetObjective()
@@ -137,12 +139,11 @@ local AFKFarm = function()
     end
 end
 
-local StartCon = nil
 StartCon = UIS.InputBegan:Connect(function(Input)
     if Input.UserInputType == Enum.UserInputType.Keyboard then
         local Key = Input.KeyCode
         if Key == _G.Settings.AFKFarmKey then
-            StartCon:Disconnect()
+            warn('Started AFK Farming!')
             AFKFarm()
         end
     end
