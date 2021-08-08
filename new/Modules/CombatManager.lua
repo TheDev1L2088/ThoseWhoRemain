@@ -31,29 +31,14 @@ for _, WeaponObj in pairs(YWR.Weapons:GetChildren()) do
             end
 
             if Weapon.Animations and Weapon.Animations.Reload then -- instant reload
-                Weapon.Animations.Reload.Sequence = {{
-                    Time = 0.1,
-					Sound = {
-						Played = false,
-						Sound = 'rbxassetid://1425270902',
-						PlaybackSpeed = 1.2
-					},
-					AddAmmo = {},
-                }}
-
-                local ReloadAnim = Weapon.Animations.Reload
-                if ReloadAnim then
-                    for _, Anim in pairs(ReloadAnim.Sequence) do
-                        if Anim.Time >= 0.18 then
-                            Anim.Time = Anim.Time * 0.4
-                        else
-                            Anim.Time = .001
-                        end
+                for i, Anim in pairs(Weapon.Animations.Reload.Sequence) do
+                    if i == #Weapon.Animations.Reload.Sequence then
+                        Anim.Time = 0.1
+                    else
+                        Anim.Time = 0.05
                     end
                 end
             end
-
-
         end
     end
 end
