@@ -46,6 +46,8 @@ _G.YWR.Character = function() if Player and Player.Character then return Player.
 
 local YWR = _G.YWR -- shortcut
 
+repeat wait() until YWR.GameStuff:FindFirstChild('StageName')
+
 local GameValues = {}
 for _, V in pairs(YWR.GameStuff:GetChildren()) do
 	if V:IsA('NumberValue') or V:IsA('StringValue') or V:IsA('BoolValue') then
