@@ -16,6 +16,62 @@ local YWR = _G.YWR
 
 local Functions = {}
 
+local Parts = {}
+Functions.Teleport = function(Character, CF)
+    for _, Child in pairs(Character:GetChildren()) do
+		if Child:IsA('BasePart') and not table.find(Parts, Child) then
+			for _, Connection in pairs(getconnections(Child.Changed)) do
+				Connection:Disable()
+			end
+			table.insert(Parts, Child)
+		end
+	end
+
+	if Character.PrimaryPart then
+		Character.PrimaryPart.CFrame = CF
+		Character:SetPrimaryPartCFrame(CF)
+	end
+end
+
+local Healable = {'Medkit', 'Bandages'}
+Functions.GetHealable = function(Character)
+	local HealItem = nil
+	for _, Item in pairs(_G.YWR.Items:GetChildren()) do
+		if table.find(Healable, Item.Name) and Item.PrimaryPart then
+			HealItem = Item
+			break
+		end
+	end
+
+	if HealItem then
+		local CF = HealItem.PrimaryPart.CFrame * CFrame.new(0, 5, 0)
+		Functions.Teleport(Character, CF)
+
+		wait()
+
+		Functions.Pickup(Functions.GetModule('Interact'))
+	end
+end
+
+Functions.GetArmor = function(Character)
+	local ArmorItem = nil
+	for _, Item in pairs(_G.YWR.Items:GetChildren()) do
+		if Item.Name == 'Body Armor' and Item.PrimaryPart then
+			ArmorItem = Item
+			break
+		end
+	end
+
+	if ArmorItem then
+		local CF = ArmorItem.PrimaryPart.CFrame * CFrame.new(0, 5, 0)
+		Functions.Teleport(Character, CF)
+
+		wait()
+
+		Functions.Pickup(Functions.GetModule('Interact'))
+	end
+end
+
 Functions.CreateFloatingPart = function()
 	local Part = Instance.new('Part', YWR.Ignore)
 	Part.Size = Vector3.new(12, 1, 12)
