@@ -130,7 +130,7 @@ end
 local StartCon = nil
 local AFKFarm = function()
     warn('Here11')
-    StartCon:Disconnect()
+    --StartCon:Disconnect()
     warn('Here10')
     while wait() do
         if GameValues.GameStage == 'Game' and Functions.IsAlive() then

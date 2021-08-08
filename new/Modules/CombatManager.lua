@@ -31,7 +31,7 @@ for _, WeaponObj in pairs(YWR.Weapons:GetChildren()) do
             end
 
             if Weapon.Animations and Weapon.Animations.Reload then -- instant reload
-                Weapon.Animations.Reload.Sequence[1].AddAmmo = {}
+                
             end
         end
     end
