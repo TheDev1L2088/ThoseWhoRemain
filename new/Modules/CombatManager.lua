@@ -119,7 +119,7 @@ end
 local mt = getrawmetatable(game)
 
 local old
---[[old = hookfunction(mt.__namecall, function(...)
+old = hookfunction(mt.__namecall, function(...)
 	if checkcaller() then return old(...) end
     local Args = {...}
 	local NamecallMethod = getnamecallmethod()
@@ -142,7 +142,7 @@ local old
                     if _G.Settings.SilentAim then
                         spawn(function()
                             local r, e = pcall(function()
-                                --DoSilentAim(WeaponStats, Args[3]['AIs'][1].AI)
+                                DoSilentAim(WeaponStats, Args[3]['AIs'][1].AI)
                             end)
                             if e then warn(e) end
                         end)
@@ -153,7 +153,7 @@ local old
 	end
 
 	return old(...)
-end)]]--
+end)
 
 ----------------------------------------------
 --// Place fortification keybinds
