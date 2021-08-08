@@ -9,12 +9,11 @@ local RunService = game:GetService('RunService')
 local Players = game:GetService('Players')
 local Player = Players.LocalPlayer
 
+repeat wait() until _G.YWR and _G.YWR['FullyImported']
+
 local YWR = _G.YWR
 local Character = YWR.Character
-warn('Here3')
-table.foreach(YWR.Imports, warn)
 local Functions = YWR.Imports.Functions
-warn('Here4')
 local ObjectiveService = YWR.ObjectiveService
 local GameValues = YWR.GameValues
 

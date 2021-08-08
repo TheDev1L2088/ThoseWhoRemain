@@ -67,9 +67,9 @@ Imports['StopReporting'] = _G.Import('Modules/StopReporting')
 Imports['CombatManager'] = _G.Import('Modules/CombatManager')
 
 YWR.Imports = Imports
+YWR.FullyImported = true
 local GetObjective = Imports['ObjectiveManager']
 local Functions = Imports['Functions']
-
 ----------------------------------------------
 --// Main
 
