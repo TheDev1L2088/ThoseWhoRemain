@@ -31,13 +31,16 @@ for _, WeaponObj in pairs(YWR.Weapons:GetChildren()) do
             end
 
             if Weapon.Animations and Weapon.Animations.Reload then -- instant reload
-                for i, Anim in pairs(Weapon.Animations.Reload.Sequence) do
-                    if i == #Weapon.Animations.Reload.Sequence then
-                        Anim.Time = 0.1
-                    else
-                        Anim.Time = 0.05
-                    end
-                end
+                Weapon.Animations.Reload = {
+                    Number = 1,
+                    CurrentTime = 0,
+                    Sequence = {
+                        {
+                            Time = 0.1,
+                            AddAmmo = {},
+                        }
+                    }
+                }
             end
         end
     end
