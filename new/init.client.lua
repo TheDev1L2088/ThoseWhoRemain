@@ -61,8 +61,6 @@ for _, V in pairs(YWR.GameStuff:GetChildren()) do
 end
 YWR.GameValues = GameValues
 
-table.foreach(GameValues, warn)
-
 ----------------------------------------------
 --// Imports
 
@@ -141,8 +139,6 @@ local AFKFarm = function()
             else -- do objective afk farm
                 Data.Run(Object)
             end
-        else
-            warn(GameValues.StageName, Functions.IsAlive())
         end
     end
 end
