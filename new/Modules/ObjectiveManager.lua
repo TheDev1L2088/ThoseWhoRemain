@@ -19,9 +19,9 @@ local Objectives = {
     --['Tundra'] = 'Car',
     --['Silverado'] = 'Car',
 
-    --['Ammo'] = 'Sit',
-    --['Medical'] = 'Sit',
-    --['Radio'] = 'Sit',
+    ['Ammo'] = 'Sit',
+    ['Medical'] = 'Sit',
+    ['Radio'] = 'Sit',
 
     --['Bus'] = 'Bus',
 

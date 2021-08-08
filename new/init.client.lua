@@ -84,7 +84,6 @@ local KillZombies = function()
     local Part = Functions.CreateFloatingPart()
     Functions.NoClip(true)
 
-    warn('Here')
     while GameValues.StageName == 'Game' and Functions.IsAlive() do
         local Character = YWR.Character()
         local Humanoid = Character:FindFirstChildOfClass('Humanoid')
@@ -136,20 +135,16 @@ local StartCon = nil
 local AFKFarm = function()
     while wait() do
         if GameValues.StageName == 'Game' and Functions.IsAlive() then
-            warn('Here11')
             local Data, Object = GetObjective()
             if not Data or not Object then -- Kill zombie afk farm
-                warn('Here13')
                 KillZombies()
             else -- do objective afk farm
-                warn('Here14')
                 Data.Run(Object)
             end
         else
             warn(GameValues.StageName, Functions.IsAlive())
         end
     end
-    warn('Here12')
 end
 
 StartCon = UIS.InputBegan:Connect(function(Input)
