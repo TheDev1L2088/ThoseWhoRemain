@@ -77,7 +77,9 @@ local KillZombies = function()
     local Part = Functions.CreateFloatingPart()
     Functions.NoClip(true)
 
+    warn('Here')
     while GameValues.StageName == 'Game' and Functions.IsAlive() do
+        warn('Here2')
         local Character = YWR.Character()
         local Humanoid = Character:FindFirstChildOfClass('Humanoid')
 
@@ -117,6 +119,7 @@ local KillZombies = function()
         end
         wait()
     end
+    warn('Here3')
 
     if Part then Part:Destroy() end
     Functions.NoClip(false)
