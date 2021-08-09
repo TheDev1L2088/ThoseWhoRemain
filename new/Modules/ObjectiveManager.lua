@@ -56,12 +56,15 @@ local GetObjective = function()
 
     for _, Object in pairs(PossibleObjectives) do
         local Data = Objectives[Object.Name]
+        warn('1-', Object, Data)
         if Data and Data.Load() then
+            warn('2-', Object)
             if Data.Check(Object) then
+                warn('3-', Object.Name, 'Passed check')
                 Objective = {Data, Object}
                 break
             else
-                warn(Object.Name, 'Failed check')
+                warn('3-', Object.Name, 'Failed check')
             end
         end
     end
