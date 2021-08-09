@@ -52,11 +52,17 @@ local GetObjective = function()
         table.insert(PossibleObjectives, Object)
     end
 
+    table.foreach(PossibleObjectives, print)
+
     for _, Object in pairs(PossibleObjectives) do
         local Data = Objectives[Object.Name]
-        if Data and Data.Load() and Data.Check(Object) then
-            Objective = {Data, Object}
-            break
+        if Data and Data.Load() then
+            if Data.Check(Object) then
+                Objective = {Data, Object}
+                break
+            else
+                warn(Object.Name, 'Failed check')
+            end
         end
     end
 
