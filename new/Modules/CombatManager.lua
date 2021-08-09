@@ -17,7 +17,7 @@ local FortInfo = require(YWR.Modules:WaitForChild('FortificationsInfo'))
 ----------------------------------------------
 --// Weapon stat editor
 
---[[for _, WeaponObj in pairs(YWR.Weapons:GetChildren()) do 
+for _, WeaponObj in pairs(YWR.Weapons:GetChildren()) do 
     if WeaponObj:IsA('ModuleScript') then
         local Weapon = require(WeaponObj)
         if Weapon and Weapon.Stats then
@@ -31,7 +31,7 @@ local FortInfo = require(YWR.Modules:WaitForChild('FortificationsInfo'))
             end
         end
     end
-end]]--
+end
 
 ----------------------------------------------
 --// Infinite Ammo & Building Supplies
@@ -75,7 +75,7 @@ end)
 ----------------------------------------------
 --// Always headshot
 
-local mt = getrawmetatable(game)
+--[[local mt = getrawmetatable(game)
 
 local old
 old = hookfunction(mt.__namecall, function(...)
@@ -105,7 +105,7 @@ old = hookfunction(mt.__namecall, function(...)
 	end
 
 	return old(...)
-end)
+end)]]---
 
 ----------------------------------------------
 --// Place fortification keybinds
