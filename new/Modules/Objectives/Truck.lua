@@ -53,7 +53,7 @@ Objective.Run = function(Object)
     while not Completed and Functions.IsAlive() and Target and Target.Parent and GameValues.StageName == 'Game' and not Trailer:FindFirstChild('Exploded Tank') do
         local CF = CFrame.new(Target.Position) * CFrame.new(0, _G.Settings.SafeHeight, 0)
         Part.CFrame = CF * CFrame.new(0, -3.5, 0)
-        Functions.Teleport(Character, CF)
+        Functions.Teleport(Character(), CF)
 
         for i = 1, 3 do
             Functions.ShootTank(Object)
