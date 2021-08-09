@@ -17,7 +17,7 @@ local FortInfo = require(YWR.Modules:WaitForChild('FortificationsInfo'))
 ----------------------------------------------
 --// Weapon stat editor
 
-for _, WeaponObj in pairs(YWR.Weapons:GetChildren()) do 
+--[[for _, WeaponObj in pairs(YWR.Weapons:GetChildren()) do 
     if WeaponObj:IsA('ModuleScript') then
         local Weapon = require(WeaponObj)
         if Weapon and Weapon.Stats then
@@ -31,7 +31,7 @@ for _, WeaponObj in pairs(YWR.Weapons:GetChildren()) do
             end
         end
     end
-end
+end]]--
 
 ----------------------------------------------
 --// Infinite Ammo & Building Supplies
