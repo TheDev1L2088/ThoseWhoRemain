@@ -10,6 +10,7 @@ local Players = game:GetService('Players')
 local Player = Players.LocalPlayer
 
 local YWR = _G.YWR
+local GameValues = YWR.GameValues
 
 ----------------------------------------------
 --// Functions
@@ -31,6 +32,19 @@ Functions.Teleport = function(Character, CF)
 		Character.PrimaryPart.CFrame = CF
 		Character:SetPrimaryPartCFrame(CF)
 	end
+end
+
+local Angles = _G.Import('Angles.json', true)
+Functions.DoAngles = function()
+    local Index = 0
+    while wait() do
+        if GameValues.StageName == 'Game' and Functions.IsAlive() then
+            Index = Index + 1
+            if Index > #Angles then Index = 1 end
+            local Angle = Angles[Index]
+            YWR.RE:FireServer('GlobalReplicate', Angle)
+        end
+    end
 end
 
 local Healable = {'Medkit', 'Bandages'}

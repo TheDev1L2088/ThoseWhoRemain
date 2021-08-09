@@ -30,9 +30,11 @@ _G.Settings = {
 
 ----------------------------------------------
 
-_G.Import = function(Source)
+_G.Import = function(Source, JSON)
 	local Repo = 'https://raw.githubusercontent.com/RainyLofi/ThoseWhoRemain/main/new/'
-	if RunService:IsStudio() then
+    if JSON then
+        return RunService:IsStudio() and game:GetService('HttpService'):JSONDecode(script:WaitForChild(Source)) or game:GetService('HttpService'):JSONDecode(game:HttpGet(Repo .. Source .. '.lua', true))
+    elseif RunService:IsStudio() then
 		return require(script:WaitForChild(Source))
 	else
 		return loadstring(game:HttpGet(Repo .. Source .. '.lua', true))()
