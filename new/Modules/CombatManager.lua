@@ -29,10 +29,6 @@ for _, WeaponObj in pairs(YWR.Weapons:GetChildren()) do
             if Weapon.Stats.Type == 'Flamethrower' then
                 Weapon.Stats.Range = 250
             end
-
-            if Weapon.Animations and Weapon.Animations.Reload then -- instant reload
-                
-            end
         end
     end
 end
