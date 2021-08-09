@@ -133,12 +133,12 @@ local StartCon = nil
 local AFKFarm = function()
     while wait() do
         if GameValues.StageName == 'Game' and Functions.IsAlive() then
-            local Data, Object = GetObjective()
-            warn('4-', Data, Object)
-            if not Data or not Object then -- Kill zombie afk farm
+            local Data = GetObjective()
+            if not Data then -- Kill zombie afk farm
                 KillZombies()
             else -- do objective afk farm
-                Data.Run(Object)
+                local Objective, Object = Data[1], Data[2]
+                Objective.Run(Object)
             end
         end
     end
