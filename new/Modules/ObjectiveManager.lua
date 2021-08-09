@@ -23,7 +23,7 @@ local Objectives = {
     ['Medical'] = 'Sit',
     ['Radio'] = 'Sit',
 
-    --['Bus'] = 'Bus',
+    ['Bus'] = 'Bus',
 
     ['EscortChar'] = 'Escort',
 
