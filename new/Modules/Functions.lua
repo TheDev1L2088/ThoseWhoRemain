@@ -69,6 +69,8 @@ Functions.GetArmor = function(Character)
 		wait()
 
 		Functions.Pickup(Functions.GetModule('Interact'))
+
+        wait()
 	end
 end
 
@@ -92,7 +94,7 @@ Functions.PlaceFort = function(Fort, CF)
     )
 end
 
-Functions.GetArmor = function()
+Functions.CheckArmor = function()
 	if Player and Player.Character then
 		local Armor = Player.Character:WaitForChild('Armor')
 		return Armor.Value

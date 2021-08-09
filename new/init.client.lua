@@ -43,6 +43,7 @@ _G.YWR.ClientEnv = getsenv(_G.YWR.Client)
 _G.YWR.Fire2 = debug.getupvalues(_G.YWR.ClientEnv.Fire2)
 _G.YWR.Modules = ReplicatedStorage:WaitForChild('Modules')
 _G.YWR.Weapons = _G.YWR.Modules:WaitForChild('Weapon Modules')
+_G.YWR.State = 'Waiting'
 
 _G.YWR.Character = function() if Player and Player.Character then return Player.Character end end
 
@@ -129,19 +130,41 @@ local KillZombies = function()
     return true
 end
 
+local AFKKillZombies = function()
+    while wait() do
+        if YWR.State == 'Objective' and GameValues.StageName == 'Game' and Functions.IsAlive() then
+            for _, Enemy in pairs(YWR.Infected:GetChildren()) do
+                if Enemy and Enemy.PrimaryPart then
+					local Distance = (Enemy.PrimaryPart.Position - Player.Character.PrimaryPart.Position).Magnitude
+					if Distance <= _G.Settings.ObjectiveKillZombieRange then
+						Functions.ShootZombie(Enemy, _G.Settings.ObjectiveKillZombieRange)
+					end
+				end
+				if YWR.State ~= 'Objective' or not Player.Character or not Player.Character.PrimaryPart or GameValues.StageName ~= 'Game' then
+					break
+				end
+            end
+        end
+    end
+end
+
 local StartCon = nil
 local AFKFarm = function()
+    spawn(AFKKillZombies)
     while wait() do
         if GameValues.StageName == 'Game' and Functions.IsAlive() then
             local Data = GetObjective()
             warn(Data)
             if not Data then -- Kill zombie afk farm
+                YWR.State = 'AFK'
                 KillZombies()
             else -- do objective afk farm
                 local Objective, Object = Data[1], Data[2]
-                warn('Running', Object, Objective)
+                YWR.State = 'Objective'
                 Objective.Run(Object)
             end
+        else
+            YWR.State = 'Waiting'
         end
     end
 end

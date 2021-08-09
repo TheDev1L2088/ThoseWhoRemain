@@ -42,11 +42,11 @@ Objective.Run = function(Object)
     Functions.NoClip(true)
 	local Part = Functions.CreateFloatingPart()
 
-    local Healing = false
+    local Busy = false
 	RunService:BindToRenderStep('Escort', 3, function()
 		local CF = CFrame.new(Target.Position) * CFrame.new(0, _G.Settings.SafeHeight, 0)
 		Part.CFrame = CF * CFrame.new(0, -3.5, 0)
-		if not Healing then
+		if not Busy then
 			Functions.Teleport(Character(), CF)
 		end
 	end)
@@ -54,9 +54,16 @@ Objective.Run = function(Object)
 	while not Completed and Functions.IsAlive() and Target and Target.Parent and GameValues.StageName == 'Game' do
 		wait()
 		if Humanoid.Health <= _G.Settings.LookForHeal then
-			Healing = true
+			Busy = true
 			Functions.GetHealable(Character())
-			Healing = false
+			Busy = false
+		elseif _G.Settings.GetBodyArmor then
+			local Armor = Functions.CheckArmor()
+			if Armor == nil or Armor <= 0 then
+				Busy = true
+				Functions.GetArmor(Character())
+				Busy = false
+			end
 		end
 	end
 
