@@ -43,8 +43,10 @@ Objective.Run = function(Object)
     local Part = Functions.CreateFloatingPart()
 
     local Busy = false
+    local Negative = false
     RunService:BindToRenderStep('Sit', 3, function()
-        local CF = CFrame.new(Target.Position) * CFrame.new(0, _G.Settings.SafeHeight, 0)
+        local Height = Negative and -_G.Settings.SafeHeight or _G.Settings.SafeHeight
+        local CF = CFrame.new(Target.Position) * CFrame.new(math.random(-2, 2), Height, math.random(-2, 2))
         Part.CFrame = CF * CFrame.new(0, -3.5, 0)
         if not Busy then
             Functions.Teleport(Character(), CF)
@@ -54,6 +56,7 @@ Objective.Run = function(Object)
     while not Completed and Functions.IsAlive() and Target and Target.Parent and GameValues.StageName == 'Game' do
         wait()
         if Humanoid.Health <= _G.Settings.LookForHeal then
+            Negative = not Negative
             Busy = true
             Functions.GetHealable(Character())
             Busy = false

@@ -15,7 +15,7 @@ _G.Settings = {
 
     -- Auto farming
     AFKFarmKey = Enum.KeyCode.RightAlt, -- key that needs to be pressed to start farming
-    SafeHeight = 12, -- how high up from secure objectives
+    SafeHeight = 12.4, -- how high up from secure objectives
 	LookForHeal = 70, -- at how much health should it look for bandages/medkit
 	ObjectiveKillZombieRange = 60,
 	TargettingKillZombieRange = 60,
