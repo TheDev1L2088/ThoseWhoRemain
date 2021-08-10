@@ -35,6 +35,7 @@ Functions.Teleport = function(Character, CF)
 end
 
 local Angles = _G.Import('Angles.json', true)
+warn('Angles', Angles)
 Functions.DoAngles = function()
     local Index = 0
     while wait() do
