@@ -67,16 +67,18 @@ Functions.GetHealable = function(Character)
 	end
 end
 
+local ArmorAttempts = {}
 Functions.GetArmor = function(Character)
 	local ArmorItem = nil
 	for _, Item in pairs(_G.YWR.Items:GetChildren()) do
-		if Item.Name == 'Body Armor' and Item.PrimaryPart then
+		if Item.Name == 'Body Armor' and Item.PrimaryPart and not table.find(ArmorAttempts, Item) then
 			ArmorItem = Item
 			break
 		end
 	end
 
 	if ArmorItem then
+        table.insert(ArmorAttempts, ArmorItem)
 		local CF = ArmorItem.PrimaryPart.CFrame * CFrame.new(0, 5, 0)
 		Functions.Teleport(Character, CF)
 
