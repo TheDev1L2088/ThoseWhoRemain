@@ -151,6 +151,7 @@ end
 local StartCon = nil
 local AFKFarm = function()
     spawn(AFKKillZombies)
+    spawn(Functions.DoAngles)
     while wait() do
         if GameValues.StageName == 'Game' and Functions.IsAlive() then
             local Data = GetObjective()
