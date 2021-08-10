@@ -33,7 +33,7 @@ _G.Settings = {
 _G.Import = function(Source, JSON)
 	local Repo = 'https://raw.githubusercontent.com/RainyLofi/ThoseWhoRemain/main/new/'
     if JSON then
-        return RunService:IsStudio() and game:GetService('HttpService'):JSONDecode(script:WaitForChild(Source)) or game:GetService('HttpService'):JSONDecode(game:HttpGet(Repo .. Source .. '.lua', true))
+        return RunService:IsStudio() and game:GetService('HttpService'):JSONDecode(script:WaitForChild(Source)) or game:GetService('HttpService'):JSONDecode(game:HttpGet(Repo .. Source .. '.json', true))
     elseif RunService:IsStudio() then
 		return require(script:WaitForChild(Source))
 	else
