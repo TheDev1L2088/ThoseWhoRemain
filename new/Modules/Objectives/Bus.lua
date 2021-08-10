@@ -45,33 +45,18 @@ Objective.Run = function(Object)
     while not Completed and Functions.IsAlive() and Target and Target.Parent and GameValues.StageName == 'Game' do
         for _, Item in pairs(Object.Parent:GetChildren()) do
             if Item:FindFirstChild('Glow') and Item.PrimaryPart and not Item:FindFirstChild('Debounce') then
-                local PickedUp = false
-                local PickedUpCon = nil
-                PickedUpCon = ObjectiveService.UpdateCarryingItem.OnClientEvent:connect(function()
-                    PickedUp = true
-                    PickedUpCon:Disconnect()
-                end)
 
-                local Attempts = 0
-                repeat wait(.2) -- Pickup the object
-                    Functions.Teleport(Character(), Item.PrimaryPart.CFrame * CFrame.new(0, 3.5, 0))
-                    Functions.PickupObjectiveItem()
+                Functions.Teleport(Character(), Item.PrimaryPart.CFrame * CFrame.new(0, 3.5, 0))
+                wait(.2)
 
-                    if Humanoid.Health <= _G.Settings.LookForHeal then
-                        Functions.GetHealable(Character())
-                    end
-                    Attempts += 1
-                until PickedUp or not Item.Parent or Attempts >= 5 or not Item.PrimaryPart or not Functions.IsAlive() or not Target or not Target.Parent or GameValues.StageName ~= 'Game'
+				Functions.PickupObjectiveItem()
+                wait()
 
-                if PickedUp then -- Place the object in the bus
-                    Functions.Teleport(Character(), Target.CFrame)
-                    wait(.2)
-                    Functions.PlaceItem()
-                else
-                    local M = Instance.new('Model', Item)
-                    M.Name = 'Debounce'
-                    game:GetService('Debris'):AddItem(M, 5)
-                end
+                Functions.Teleport(Character(), Target.CFrame)
+				wait(.2)
+
+				Functions.PlaceItem()
+                wait()
             end
             if not Functions.IsAlive() or not Target or not Target.Parent or GameValues.StageName ~= 'Game' then break end
         end
