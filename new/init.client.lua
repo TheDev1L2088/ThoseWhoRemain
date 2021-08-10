@@ -95,11 +95,11 @@ local KillZombies = function()
 					DiedCon:Disconnect()
 				end)
 
-                local Healing = false
+                local Busy = false
                 RunService:BindToRenderStep('ShootZombie', 2, function()
 					if Zombie and Zombie.Parent and Zombie.PrimaryPart and Character and Character.Parent and Character.PrimaryPart then
 						Part.CFrame = Zombie.PrimaryPart.CFrame * CFrame.new(0, 8, 0)
-						if not Healing then
+						if not Busy then
 							Functions.Teleport(Character, Part.CFrame * CFrame.new(math.random(-3, 3), 3.8, math.random(-3, 3)))
 						end
 					end
@@ -108,9 +108,16 @@ local KillZombies = function()
                 while Zombie and Zombie.Parent and not Dead and Functions.IsAlive(Character, Humanoid) and GameValues.StageName == 'Game' do
 					Functions.ShootZombie(Zombie, _G.Settings.TargettingKillZombieRange)
 					if Humanoid.Health <= _G.Settings.LookForHeal then
-						Healing = true
+						Busy = true
 						Functions.GetHealable(Character)
-						Healing = false
+						Busy = false
+                    elseif _G.Settings.GetBodyArmor then
+                        local Armor = Functions.CheckArmor()
+                        if Armor == nil or Armor <= 0 then
+                            Busy = true
+                            Functions.GetArmor(Character)
+                            Busy = false
+                        end
 					end
                     wait()
 				end
